@@ -1,0 +1,14 @@
+sudo make install -C /home/bec/BackedUp/Code/atlantis/Atlantis_v2_DVPT
+if [ $? -eq 0 ] ; then
+
+
+#valgrind --log-file=valgrind%p.log --track-origins=yes --leak-check=full --track-fds=yes --show-reachable=yes 
+#gdb --args 
+atlantisNew -i init_vmpa_setas_15052013_external.nc 0 -o outputSETAS.nc -r VMPA_setas_run_fishing_F_External_New.prm -f VMPA_setas_force_fish.prm -p VMPA_setas_physics.prm -b VMPA_setas_biol_fishing_New_External_Marie.prm -h VMPA_setas_harvest_F_New.prm -s SETasGroups_externalMarie.csv -q SETasFisheries.csv -d outputFolderExternal 2>out2.txt
+
+
+else 
+  echo 'Failed to compile bec_dev'
+  
+fi
+

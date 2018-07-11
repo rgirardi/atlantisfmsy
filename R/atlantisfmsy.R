@@ -1,0 +1,35 @@
+#' atlantisfmsy: Estimate a functional group's Fmsy in Atlantis ecosystem model
+#'
+#' @description An estimation of a functional group's Fmsy in Atlantis ecosystem
+#'   model in R. It iteratively searchs for Fmsy of a specified functional group
+#'   in a calibrated Atlantis model. The iterative simulations protocole was
+#'   defined by Dr. Elisabeth Fulton (CSIRO) for the IndiSeas project
+#'   (\url{http://www.indiseas.org/}, 03/01/2018).
+#'
+#' @section Methods:
+#'   It is designed first to gradualy increase F for a particular functional
+#'   group in the model up to the collapse of the stock. Then, it narrows down
+#'   the value of Fmsy (in y-1) with a precision of two decimals. To do so, it
+#'   copies/pastes all the files necessary to run the calibrated model into a
+#'   seperate directory and then modifies the fishing mortality parameter (mFC)
+#'   of the selected functinoal group in the harvest parameters file within this
+#'   directory before each simulation. A new name is provided for the output
+#'   files in the bach/shell file and finally the Atlantis model is run. It
+#'   starts at F = 0 , with a step of F = 0.4, until reaching collapse
+#'   \strong{(NEED TO BE MODIFY AS B = 0.1*B0)}. Then in the interval containing
+#'   FMSY, reduce F-step by 50% progressively until a sufficiently smooth curve
+#'   is obtained to enable estimation of FMSY at a precision of 10E-02.For each
+#'   simulation allow a burn in time of at least 20 years (depends on the time
+#'   that your model needs to stabilize), then run for another 30 years, and
+#'   take average of the last 5 years to estimates the yield.
+#'   See Atlantis website for more information on the ecosystem model
+#'   (\url{https://research.csiro.au/atlantis/}, 03/01/2018).
+#'
+#' @author Raphael Girardin \email{raphael.girardin@@ifremer.fr}
+#'
+#' @seealso
+#'
+#' @docType package
+#' @name atlantisfmsy
+"_PACKAGE"
+#> [1] "_PACKAGE"

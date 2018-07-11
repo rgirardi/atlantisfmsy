@@ -1,0 +1,419 @@
+#
+# 2/2004, Beth Fulton, Parameters for sampling model
+#
+# 17-August-2012 Bec Gorton. Updated for use with new Atlantis code.
+#
+########################################################
+
+# Run parameters
+tassessstart  0           # Output start day (60)
+tassessinc    4         # Collect data every x days
+teatassessinc 4         # Collect diet information every x number of timesteps (1820)
+tClassicalAssessStart 8   # Day that formal assessment model use starts (will cause a warning if less than 10 years after tassessstart, still possible, but may cause problems for time series dependent assessments)
+
+flaggen       1           # Whether to generate random numbers (1) or read them in (0)
+flagpatchy    0           # Whether want patchy temporal sampling (1) or monitoring at a regular frequency (0)
+flagcont      1           # Whether want to have within year continuous sampling (1) or vertebrate surveys only annual (0) even if physical properties collected more frequently
+flagareacorrect  1        # Whether to average sampling totals over space and time (1) or just number of sampling trips in the year (0) 
+minfreq       30          # Minimum frequency of sampling
+maxfreq       1820        # Maximum frequency of sampling
+flagecosysassess  1       # Whether assessing ecosystem as well as specific species
+flagobsdata   1           # Whether using on board observers to collect catch information (for size distributions of catch etc)
+
+nfzones       1           # Number of fishing zones
+nsbox_i       1           # Number of sampling boxes (intensive sampling - or only sampling if only one design used)
+nsbox_o       1           # Number of sampling boxes (less intensive sampling)
+
+crit_depth    250         # Depth defining inshore-offshore split
+
+K_num_tot_assess 97        # Total number of biological groups in the assessment model (juveniles and adults handled separately for vertebrates)
+K_num_live       91        # Total number of living groups in the model (flora and fauna) 
+K_num_detritus   6         # Total number of detritus groups in the model (labile and refractory; water column and sediments) 
+K_num_eweinvert  21        # Total number of invertebrate groups considered in the network calculations
+K_num_charis     6         # Total number of charismatic groups in the model (birds and mammals)
+K_num_sampleage  10        # Total number of separate age classes sampled per group by the sampling model
+K_num_prod       24        # Total number of invertebrates production info is collected for (including flora)
+K_num_eat        18        # Total number of invertebrates consumption info is collected for (including flora)
+K_num_invfished  16        # Total number of invertebrate groups impacted by fishing (including flora)
+
+maxage        90           # Maximum number of age classes tracked per group in the sampling model's agelengthkey
+K_num_stomaches 1000       # Maximum number of stomaches sampled
+K_num_size    10          # Maximum number of size classes tracked per group in the sampling model's agelengthkey
+K_num_pelbin  35          # Number of bins used in the pelagic biomass size spectra analysis
+K_num_sedbin  4           # Number of bins used in the benthic biomass size spectra analysis
+K_num_abcbin  35          # Number of bins used in the abundance-biomass curve analysis
+K_num_trophbin 5          # Number of bins used in the trophic spectra curve analysis
+maxTL         8           # Maxium number of trophic levels considered in Lindeman network analysis
+
+samplediet    1           # Flag indicating whether sampled diets are output: 0 = no, 1 = yes
+ageout        0           # Flag indicating whether sampled age structures are output: 0 = no, 1 = yes
+
+phys_samplingsize 1 # The number of times each physical sample should be sampled per sampling event (usually set to 1)
+
+# Zone each box belongs to
+zones         11
+1 1 1 1 1 1 1 1 1 1 1
+
+# Identity of each of the sampling boxes
+sites_intense 1
+1
+
+# Identity of each of the less intensive sampling boxes 
+sites_other   1
+0
+
+# Zone each box belongs to (1=inshore, 0 = offshore)
+InOffshore    1
+0
+
+flagphys      2           # Flag for setting error structure used for physical and processes: 0 = uniform, 1 = normal, 2 = lognormal
+flaginvpbiom  2           # Flag for setting error structure used for pelagic invertebrate biomass: 0 = uniform, 1 = normal, 2 = lognormal
+flagepibiom   2           # Flag for setting error structure used for benthic epifauna invertebrate biomass: 0 = uniform, 1 = normal, 2 = lognormal
+flaginfbiom   2           # Flag for setting error structure used for benthic infauna invertebrate biomass: 0 = uniform, 1 = normal, 2 = lognormal
+flagdetbiom   2           # Flag for setting error structure used for detritus: 0 = uniform, 1 = normal, 2 = lognormal
+flagfishbiom  2           # Flag for setting error structure used for detritus: 0 = uniform, 1 = normal, 2 = lognormal
+flagverts     2           # Flag for setting error structure used for vertebrate info: 0 = uniform, 1 = normal, 2 = lognormal
+flagprod      2           # Flag for setting error structure used for production: 0 = uniform, 1 = normal, 2 = lognormal
+flageat       2           # Flag for setting error structure used for consumption: 0 = uniform, 1 = normal, 2 = lognormal
+flagcatch     2           # Flag for setting error structure used for catch: 0 = uniform, 1 = normal, 2 = lognormal
+flageffort    2           # Flag for setting error structure used for effort: 0 = uniform, 1 = normal,    2 = lognormal
+flagdiscrd    2           # Flag for setting error structure used for discard: 0 = uniform, 1 = normal, 2 = lognormal
+flagcount     2           # Flag for setting error structure used for bird counts: 0 = uniform, 1 = normal, 2 = lognormal
+flagcurve     4           # Flag for setting error structure used for selectivity curve estimate: 0 = uniform, 1 = normal, 2 = lognormal, 4 = know correct curve
+flagprms      1           # Flag for setting error structure used for selectivity curve parameters: 0 = uniform, 1 = normal, 2 = lognormal
+flagage       2           # Flag for setting error structure used for aging: 0 = uniform, 1 = normal, 2 = lognormal
+
+# Biased sample mean as percentage of true mean
+k_avgsalt     1.0         # For salinity  
+k_avgphys     1.0         # For physical properties (light, oxygen)
+k_avgnuts     1.0         # For nutrients
+k_avgprocs    1.0         # For processes (denitrification, nitrification) and chlorophyll a
+k_avgphytl    1.0         # For large phytoplankton
+k_avgphyts    1.0         # For small phytoplankton
+k_avgzoops    0.5         # For small zooplankton
+k_avgzoopl    1.0         # For large zooplankton
+k_avgcep      1.0         # For cephalopods
+k_avgpbact    0.7         # For pelagic bacteria
+k_avgsbact    0.5         # For sediment bacteria
+k_avginfs     0.5         # For small infauna (meiobenthos)
+k_avginfl     1.0         # For large infauna (deposit feeders and infaunal carnivores)
+k_avgepif1    1.0         # For epifauna type 1 (filter feeders and grazers)
+k_avgepif2    1.0         # For epifauna type 2 (macrozoobenthos)
+k_avgppben    1.0         # For benthic primary producers
+k_avgrdet     1.0         # For refractory detritus
+k_avgldet     1.0         # For labile detritus
+k_avgfish     1.0         # For fish and other vertebrate biomass
+k_avgpelpp    1.0         # For pelagic primary production
+k_avgzoopp    1.0         # For zooplankton production
+k_avgcepp     1.0         # For cephalopod production
+k_avgpbactp   1.0         # For pelagic bacterial production
+k_avgsbactp   1.0         # For sediment bacterial production
+k_avginfsp    1.0         # For small infauna (meiobenthos) production
+k_avginflp    1.0         # For large infauna (deposit feeders and infaunal carnivores) production
+k_avgepi1p    1.0         # For epifauna type 1(filter feeder) production
+k_avgepi2p    1.0         # For epifauna type 2 (grazers and macrozoobenthos) production
+k_avgbenpp    1.0         # For benthic primary production
+k_avgzoopeat  1.0         # For zooplankton consumption
+k_avgcepeat   1.0         # For cephalopod consumption
+k_avgpbacteat 1.0         # For pelagic bacterial consumption
+k_avgsbacteat 1.0         # For sediment bacterial consumption
+k_avginfseat  1.0         # For small infauna (meiobenthos) consumption
+k_avginfleat  1.0         # For large infauna (deposit feeders and infaunal carnivores) consumption
+k_avgepi1eat  1.0         # For epifauna type 1 (filter feeder) consumption
+k_avgepi2eat  1.0         # For epifauna type 2 (grazers and macrozoobenthos) consumption
+k_avgweight   1.0         # For vertebrate weights
+k_avgprodn    1.0         # For vertebrate production
+k_avgeat      1.0         # For vertebrate consumption
+k_avgdiscrd   0.7         # For vertebrate discard rates
+k_avgcatch    0.8         # For vertebrate total catch
+k_avgeffort   0.9         # For vertebrate total effort
+k_avgtdiscrd  0.8         # For vertebrate total discards
+k_avgcount    1.0         # For counts
+k_avgcobs     0.9         # For numbers observed in the catch
+k_avgcurve    1.0         # For selectivity curve used
+k_avgprms     1.0         # For parameters of selectivity curves
+k_avgage      1.0         # For aging
+
+# Error variance (as proportion of mean)
+k_varsalt     0.01        # For salinity
+k_varphys     0.25        # For physical properties (light, oxygen)
+k_varnuts     0.25        # For nutrients
+k_varprocs    0.25        # For processes (denitrification, nitrification) and chlorophyll a
+k_varphytl    0.36        # For large phytoplankton
+k_varphyts    0.49        # For small phytoplankton
+k_varzoops    1.0         # For small zooplankton
+k_varzoopl    0.36        # For large zooplankton
+k_varcep      0.36        # For cephalopods
+k_varpbact    0.49        # For pelagic bacteria
+k_varsbact    0.49        # For sediment bacteria
+k_varinfs     2.0         # For small infauna (meiobenthos)
+k_varinfl     1.5         # For large infauna (deposit feeders and infaunal carnivores)
+k_varepif1    0.36        # For epifauna type 1 (filter feeders and grazers)
+k_varepif2    0.36        # For epifauna type 2 (macrozoobenthos)
+k_varppben    0.36        # For benthic primary producers
+k_varrdet     0.36        # For refractory detritus
+k_varldet     0.36        # For labile detritus
+k_varfish     0.36        # For fish and other vertebrate biomass
+k_varpelpp    0.1         # For pelagic primary production
+k_varzoopp    0.1         # For zooplankton production
+k_varcepp     0.1         # For cephalopod production
+k_varpbactp   0.1         # For pelagic bacterial production
+k_varsbactp   0.2         # For sediment bacterial production
+k_varinfsp    0.2         # For small infauna (meiobenthos) production
+k_varinflp    0.2         # For large infauna (deposit feeders and infaunal carnivores) production
+k_varepi1p    0.2         # For epifauna type 1 (filter feeder) production
+k_varepi2p    0.2         # For epifauna type 2 (grazers and macrozoobenthos) production
+k_varbenpp    0.2         # For benthic primary production
+k_varzoopeat  0.1         # For zooplankton consumption
+k_varcepeat   0.1         # For cephalopod consumption
+k_varpbacteat 0.2         # For pelagic bacterial consumption
+k_varsbacteat 0.2         # For sediment bacterial consumption
+k_varinfseat  0.2         # For small infauna (meiobenthos) consumption
+k_varinfleat  0.2         # For large infauna (deposit feeders and infaunal carnivores) consumption
+k_varepi1eat  0.2         # For epifauna type 1 (filter feeder) consumption
+k_varepi2eat  0.2         # For epifauna type 2 (grazers and macrozoobenthos) consumption
+k_varweight   0.001       # For vertebrate weights
+k_varprodn    0.36        # For vertebrate production
+k_vareat      0.36        # For vertebrate consumption
+k_vardiscrd   0.25        # For vertebrate discards
+k_varcatch    0.25        # For vertebrate total catch
+k_vareffort   0.1         # For vertebrate total effort
+k_vartdiscrd  0.36        # For vertebrate total discards
+k_varcount    0.25        # For counts
+k_varcobs     0.1         # For numbers observed in the catch
+k_varcurve    1.0         # For selectivity curve used
+k_varprms     0.3         # For parameters of selectivity curves
+k_varage      1.0         # For aging
+
+# Assumes order based on your functional group definition file.
+
+# Sample sizes for catch sub-sampling
+samplesize    62
+3000 3000 3000 3000 500 3000 3000 200 3000 100 100 3000 3000 3000 3000 3000 3000 3000 3000 3000 500 100 100 100 10 100 100 50 20 100 50 3000 50 50 50 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# Coefficient of allometic length-weight relation
+li_a          62
+0.006435 0.02178 0.007752 0.001764 0.001782 0.0094 0.00867 0.21186 0.00867 0.06732 0.04845 0.0065 0.00792 0.02156 0.008585 0.02244 0.002424 0.001881 0.002574 0.069 0.001782 0.0061 0.0039204 0.006039 0.0051876 0.006039 0.040491 0.03535 0.03535 0.008 0.0198 0.00637 0.2 0.0101 0.0098 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+        
+# Exponent in allometic length-weight relation
+li_b          62
+2.97 3.01002 3.2825 3.3027 3.2046 2.875 3.2742 2.96 3.13 3.234 3 2.891 3.2472 2.9205 3.13 3.009 3.37 3.3165 3.038 2.77 3.2373 2.8224 2.94392 3.06408 3.17241 2.8512 2.86704 2.9 2.929 3.06408 2.97 3.2825 3.06 2.97 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# Size (cm) of the size (length) bins 
+li_bin        62
+5 5 5 10 10 10 10 30 10 2 1 5 15 5 15 5 10 10 15 10 5 15 25 10 30 10 20 20 20 10 25 5 300 20 200 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# Size (cm) of smallest size bin
+li_start      62
+0 0 0 5 5 0 5 30 0 0 0 0 10 0 5 0 0 0 0 5 5 20 50 5 50 50 10 30 30 0 10 0 200 50 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# Maxium length of each harvested group (cm) - vertebrates and invertebrates
+# Vertebrates in same order as given in sp_id in datareading.c and
+# and invertebrates in order as per your functional group input file.
+li_max 62
+5.000000e+01 5.000000e+01 3.000000e+01 1.400000e+02 1.200000e+02 9.000000e+01 1.200000e+02 3.500000e+02 4.000000e+01 2.000000e+01 1.000000e+01 4.000000e+01 1.500000e+02 6.000000e+01 1.400000e+02 4.500000e+01 8.000000e+01 8.000000e+01 1.300000e+02 9.500000e+01 6.000000e+01 1.400000e+02 2.600000e+02 1.200000e+02 3.500000e+02 1.100000e+02 1.900000e+02 2.200000e+02 2.500000e+02 1.600000e+02 2.500000e+02 8.000000e+01 3.000000e+03 3.000000e+02 2.000000e+03 5.000000e+01 1.500000e+01 2.000000e+01 1.000000e+01 1.500000e+01 3.000000e+01 2.000000e+01 1.000000e+01 2.000000e+01 6.000000e+01 5.000000e+00 3.000000e+01 1.000000e+01 1.000000e+00 5.000000e+01 6.000000e+02 0 0 0 0 0 0 0 0 0 0 0 
+
+
+## Fishing selectivity information for each fishery
+# There must be as many entries in q_lsm, q_sigma and selcurve as given by the value of nvert
+# Order is based on your fishery definition file.
+
+q_lsm         33
+0.3 0.4 15.0 0.5 65.0 100.0 110.0 40.0 0.05 0.1 50.0 0.07 0.3 50.0 40.0 30.0 80.0 40.0 90.0 80.0 120.0 0.1 35.0 0.0 0.2 0.07 15.0 1.0 50.0 50.0 50.0 0.3 0.1
+
+q_sigma       33
+0.0 0.0 30.0 0.0 40.0 55.0 200.0 0.1 0.25 0.0 45.0 0.0 0.0 90.0 50.0 30.0 70.0 50.0 90.0 80.0 200.0 0.0 0.15 0.0 0.0 0.0 30.0 3.0 45.0 45.0 40.0 0.0 0.0 0.0
+
+# Note that: 
+# selcurve == 0 means use constant selectivity
+# selcurve == 1 means use logistic selectivity
+# selcurve == 2 means use normal selectivity
+# selcurve == 3 means use lognormal selectivity
+# selcurve == 4 means use gamma selectivity
+selcurve      33
+0 0 2 0 2 2 4 1 1 0 4 0 0 2 2 2 2 2 4 4 4 0 1 0 0 0 2 0 4 4 2 0 0
+
+# Availabilty (acessibility of stock) of fish, per fishery
+avail_FPL    33
+0.5 0.5 0.3 0.15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FPS    33
+0.5 0.5 0.3 0.005 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FPO    33
+0.5 0.5 0.3 0.15 0.5 0.5 0.6 0.8 0.5 0.3 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FVD    33
+0.3 0.7 0.8 0.9 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FVV    33
+0.3 0.7 0.8 0.9 0.9 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FVS    33
+0.8 0.7 0.3 0.3 0.3 0.9 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FVT    33
+0.8 0.7 0.3 0.3 0.3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FVO    33
+0.5 0.3 0.6 0.3 0.6 0.3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FVB    33
+0.6 0.7 0.8 0.6 0.5 0.5 0.6 0.5 0.6 0.7 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FMM    33
+0.5 0.5 0.5 0.5 0.1 0.001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FMN    33
+0.5 0.5 0.6 0.5 0.001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FBP    33
+0.5 0.5 0.3 0.005 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDD    33
+0.3 0.7 0.5 0.7 0.6 0.8 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDS    33
+0.2 0.3 0.2 0.3 0.1 0.5 0.6 0.5 0.5 0.6 0.8 0.9 0.8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+avail_FDB    33
+0.6 0.45 0.3 0.6 0.2 0.5 0.6 0.8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDC    33
+0.3 0.5 0.6 0.5 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDO    33
+0.6 0.5 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDE    33
+0.6 0.8 0.3 0.5 0.5 0.6 0.5 0.5 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDF    33
+0.5 0.3 0.8 0.5 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDM    33
+0.5 0.5 0.5 0.8 0.8 0.9 0.6 0.01 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_FDP    33
+0.4 0.6 0.8 0.8 0.4 0.4 0.4 0.4 0.8 0.6 0.4 0.8 0.6 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SHB    33
+0.4 0.6 0.8 0.8 0.4 0.4 0.4 0.4 0.8 0.6 0.4 0.8 0.6 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SHD    33
+0.3 0.5 0.1 0.2 0.2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SHC    33
+0.5 0.6 0.01 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SHP    33 
+0.6 0.4 0.05 0.3 0.1 0.01 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+avail_SHR    33
+0.3 0.5 0.1 0.2 0.2 0.1 0.001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SSK    33
+0.3 0.5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SB     33
+0.001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_SP     33
+0.1 0.5 0.5 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_REP    33
+0.001 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_PIN    33
+0.1 0.0001 0.1 0.1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_WDG    33
+0.0001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_WHB    33
+0.1 0.0001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_WHS    33
+0.001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+avail_WHT    33
+0.1 0.0001 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+# Vector identifying each group as a consumer (1) or non-consumer (0)
+#CONid              97
+#0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0
+
+# Detritus inputs to each zone
+input_DLwc         1
+0 
+
+input_DRwc         1
+0 
+
+input_DLsed        1
+0 
+
+input_DRsed        1
+0 
+
+# Proportion of discards flowing to each of the detritus pool. The first value is for the water column, the second value is for the sediment.
+Discard_Fate_DL	2
+0.0 0.2
+Discard_Fate_DC	2
+0.0 0.3
+Discard_Fate_DR	2
+0.0 0.5
+
+# PBR parameter for each vertebrate and cephalopods - order is based on your functional group definition file. Only values for Vertebrates and CEP groups will be used.
+R_max             62
+0.6 0.6 0.6 0.4 0.4 0.4 0.4 0.4 0.4 0.6 0.6 0.6 0.4 0.45 0.45 0.4 0.4 0.45 0.4 0.35 0.4 0.35 0.35 0.35 0.35 0.35 0.35 0.07 0.07 0.07 0.15 0.15 0.07 0.07 0.07 0.8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# avgerage invertebrate length (mm) - value read in for all groups. Vertebrate values are ignored.
+avg_inv_size 62
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.000000e+03 6.000000e+01 6.000000e+01 6.000000e+01 1.500000e+02 3.000000e+02 4.000000e+02 2.500000e+02 1.000000e+03 1.000000e-01 5.000000e+01 6.000000e+03 1.000000e-10 4.000000e+02 1.000000e+01 1.000000e+01 1.000000e-10 1.000000e-11 1.000000e-12 1.000000e-03 1.000000e-06 1.000000e-12 1.000000e-12 1.000000e-01 0 0 0 
+
+## Assessment parameters
+Assess_Tol        1.0      # Fractional convergence tolerance of minimisation
+Assess_Btol       0.105    # Acceptable proportional buffer on convergence           
+Assess_Max_Int    2000     # Maxiumum number of iterations of Amoeba 
+
+AssessNyr         20       # Length of longrun projections in Fref estimation
+
+## Remember to turn on (i.e. 1) later on for NEUS
+# Assessment parameter set-up for fished groups
+# no_assess 0
+# schafer_model 1 (surplus production)
+# VPA_model 2
+# MSVPA_model 3
+# CAB_model (or potentially SS2) 4
+# CAB_mimic 5
+# qlinear_regress 6
+# CPUE_linear_regress 7
+#
+flag_assess 62
+0 0 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# Datastream to be used 0 = commercial, 1 = survey
+assess_datastream 62
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+assess_bootstrap 62
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+assess_nat_mort 62
+0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0.15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# Which version of production model to use:
+# 0: Constant q and p
+# 1: Constant q, assymetric p
+# 2: Changing q, constant p
+# 3: Changing q, assymetric p
+
+flag_prod_model 62
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+top_pcnt 62
+80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 80 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+bot_pcnt 62
+20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0

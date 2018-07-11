@@ -1,0 +1,35 @@
+# You can learn more about package authoring with RStudio at:
+#
+#   http://r-pkgs.had.co.nz/
+#
+# Some useful keyboard shortcuts for package authoring:
+#
+#   Build and Reload Package:  'Ctrl + Shift + B'
+#   Check Package:             'Ctrl + Shift + E'
+#   Test Package:              'Ctrl + Shift + T'
+#
+# You can learn more about R class and method at:
+#
+# http://adv-r.had.co.nz/
+#
+- write a vignettes and the testing...
+
+- Add option to user (if he want to use is own folder structure or leave the package create AtlantisMSY/COD), ALSO remove the AtlantisMSY part.
+
+- Add a function that deals with fish that migrates outside le model domain:
+  Create a flag variable (1: modify fishing outside the model, 0: no modification)
+
+- Add a script that check that all the files are present in /AtlantisMSY/forcing folder in case of computer crash during the copy of files. If not rerun atlantisfmsy_modelcopy.
+
+- Develop the package for OSX.
+
+- add attribute to objects if necessary (like for dataframe) with attr() or attributes().
+
+- perform a check of the package.
+
+_ could increase perf by calling directly the right method (like aggregate.data.frame be carreful by forcing it even if something that is not a dataframe is given the function will crash).
+
+- to generalize the function that look for parameters with different structure (one value, a vector or a matrices), I could create an S3 function with different methods (see Atlantis code ReadXML to get the different way of reading pramaters).
+
+- use same lyrics than alex (change arguments to match the name of his and give the same description)
+

@@ -1,0 +1,37 @@
+Updates to files:
+
+
+16th Jan 2013
+
+The nominal dz values in the files are incorrect.
+
+Getting the following error messages:
+
+box 4 doesn't have enough layers. The sum of your nominal_dz values should be greater than botz. Check your initial conditions netcdf file.
+
+
+Botz in the bgm file for box 4 is box4.botz	-4255     
+
+nominal_dz is:
+
+ 1300, 450, 150, 50, 30, 20, 1,
+
+Should be:
+
+3555, 450, 150, 50, 30, 20, 1,
+
+Same issue for box 5. botz is -3405. Max layer depth is 1300. Should be 2705. 
+Same issue for box 7. botz is -4531. Max layer depth is 1330 should be 3831.
+Same issue for box 8. botz is -4650. Max layer depth is 1330 should be 3950.
+Same issue for box 9. botz is -4551. Max layer depth is 1330 should be 3851.
+Same issue for box 10. botz is -3702 . Max layer depth is 1330 should be 3702.
+
+
+24th April 2013
+
+Added overwinter parameters.
+
+15th Octobe 2015.
+Updated to work with code revision 5705
+
+

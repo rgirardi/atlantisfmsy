@@ -1,0 +1,23 @@
+README
+
+
+File breakdown:
+
+
+This folder contains a number of different possible runs.
+
+Base test files:
+
+atlantisNew -i init_vmpa_setas_25032013.nc 0 -o outputSETAS.nc -r VMPA_setas_run_fishing_F_New.prm -f VMPA_setas_force_fish.prm -p VMPA_setas_physics.prm -b VMPA_setas_biol_fishing_New.prm -h VMPA_setas_harvest_F_New.prm -s SETasGroups.csv -q SETasFisheries.csv -d OutputFolderTest
+
+External Oxygen and Light Forcing files:
+
+An additional netcdf file is read in containing data to overwrite the Light and Oxygen tracers. There is a different forcing file that specifies the location of the netcdf file.
+
+atlantisNew -i init_vmpa_setas_25032013.nc 0 -o outputSETAS.nc -r VMPA_setas_run_fishing_F_New.prm -f VMPA_setas_force_fish_Oxygen.prm -p VMPA_setas_physics.prm -b VMPA_setas_biol_fishing_New.prm -s SETasGroups.csv -q SETasFisheries.csv
+
+External Boxes
+
+There is some new functionality in Atlantis Atlantis_v2_DVPT branch that allows a boundary box to be treated as an external box. This new functionality is still in development by Marie Savina-Rolland. See the runNewExternal script for more information about which files are relevant.
+
+
