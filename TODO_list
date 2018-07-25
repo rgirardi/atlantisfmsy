@@ -33,3 +33,8 @@ _ could increase perf by calling directly the right method (like aggregate.data.
 
 - use same lyrics than alex (change arguments to match the name of his and give the same description)
 
+- add an option to store only the data needed for Fmsy search (5 last years)
+
+- finish clean up of plotting function
+
+- redo NAMESPACE cf chap 8 p.93

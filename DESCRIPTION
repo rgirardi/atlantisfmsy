@@ -11,19 +11,19 @@ Description: An estimation of a functional group's Fmsy in Atlantis ecosystem
     (http://www.indiseas.org/, 03/01/2018). It is designed first to gradualy 
     increase F for a particular functional group in the model up to the collapse 
     of the stock. Then, it narrows down the value of Fmsy (in y-1) with a 
-    precision of two decimal places. To do so, it copies/pastes all the files 
-    necessary to run the calibrated model into a seperate directory and then 
-    modifies the fishing mortality parameter (mFC) of the selected functinoal 
-    group in the harvest parameters file within this directory before each 
-    simulation. A new name is provided for the output files in the bach/shell 
-    file and finally the Atlantis model is run. It starts at F = 0 , with a 
-    step of F = 0.4, until reaching collapse (NEED TO BE MODIFY AS B = 0.1*B0).
-    Then in the interval containing FMSY, reduce F-step by 50% progressively 
-    until a sufficiently smooth curve is obtained to enable estimation of FMSY
-    with a precision of two decimal places.For each simulation allow a burn in 
-    time of at least 20 years (depends on the time that your model needs to 
-    stabilize), then run for another 30 years, and take average of the last 5 
-    years to estimates the yield.
+    precision of 10E-02. To do so, it copies/pastes all the files necessary to 
+    run the calibrated model into a seperate directory and then modifies the 
+    fishing mortality parameter (mFC) of the selected functinoal group in the 
+    harvest parameters file within this directory before each simulation. A new 
+    name is provided for the output files in the bach/shell file and finally the 
+    Atlantis model is run. It starts at F = 0 , with a step of F = 0.4, until 
+    reaching collapse (NEED TO BE MODIFY AS B = 0.1*B0).  Then in the interval 
+    containing FMSY, reduce F-step by 50% progressively until a sufficiently 
+    smooth curve is obtained to enable estimation of FMSY at a precision of 
+    10E-02.For each simulation allow a burn in time of at least 20 years 
+    (depends on the time that your model needs to stabilize), then run for 
+    another 30 years, and take average of the last 5 years to estimates the 
+    yield.
     See Atlantis website for more information on the ecosystem model 
     (https://research.csiro.au/atlantis/, 03/01/2018).
 Depends: R (>= 3.4.3)
