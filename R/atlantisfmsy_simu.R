@@ -180,7 +180,7 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
     {
       f_simu <- as.numeric(f_simu[, c("ft1", "ft2")]) / 365
     } else {
-      f_simu <- as.numeric(f_simu$ft2) / 365
+      f_simu <- as.numeric(f_simu[,grep('ft[0-9]', names(f_simu))]) / 365
     }
 
     while(length(f_simu) != 0) {

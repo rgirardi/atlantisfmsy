@@ -341,6 +341,7 @@ atlantisfmsy_fmaxcatch = function(func_grp, path, exe_name, run_time, fmax) {
 
   fyield_final$ft2[fyield_final$ft2 >= fmax] <- NA
   fyield_ini <- fyield_final[, c("sp", "f", "ft1", "ft2")]
+  fyield_ini <- fyield_ini[,!is.na(fyield_ini)]
   utils::write.table(fyield_ini, file.path(output_path, "Fnext_simu.txt"), sep = ",", dec = ".", row.names = F)
   gc()
 }

@@ -319,9 +319,14 @@ atlantisfmsy_completion = function(func_grp, output_path) {
   fyield <- utils::read.table(file.path(output_path, paste("Fmsy_", func_grp, ".txt", sep = "")), sep = ",", dec = ".", header = T)
 
   if(fyield_final$f == max(fyield$f)) {
-    end <- 2
-    print("You need to increase fmax value. FMSY not reached during the simulation process.")
-    gc()
+    # does the stock crashed with f = 0.4
+    if(round(fyield$yield[fyield$f == max(fyield$f)]) == 0) {
+      end <- 0
+    } else {
+      end <- 2
+      print("You need to increase fmax value. FMSY not reached during the simulation process.")
+      gc()
+    }
     return(end)
   }
 

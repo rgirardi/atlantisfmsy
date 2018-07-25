@@ -145,7 +145,7 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
     output_files <- atlantis_lastsimu(output_path, last_run)[[1]]
     fmin <- atlantis_lastsimu(output_path, last_run)[[2]]
   }
-
+  output_files <- gsub(paste0(output_path,"/"), "", output_files)
 
   if("Fnext_simu.txt" %in% output_files){
 
@@ -157,9 +157,11 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
 
     f_simu <- utils::read.table(file.path(output_path,"Fnext_simu.txt"), sep = ",", dec = ".", header = T)
     # remove simulation already completed from the next set of simulation.
-    if (as.numeric(f_simu$ft2) == fmin){
-      f_simu <- f_simu[, names(f_simu) != "ft1"]
-      utils::write.table(f_simu, file.path(output_path,"Fnext_simu.txt"), sep = ",", dec = ".", row.names = F)
+    if (dim(f_simu)[2] == 4){
+      if (as.numeric(f_simu$ft2) == fmin){
+        f_simu <- f_simu[, names(f_simu) != "ft1"]
+        utils::write.table(f_simu, file.path(output_path,"Fnext_simu.txt"), sep = ",", dec = ".", row.names = F)
+      }
     }
     fmsy <- atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, restart = 1) # restart at the second stage: MSY estimation.
   } else {
