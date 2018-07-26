@@ -91,7 +91,7 @@ atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax,
 
   # Check for completion of the Fmsy simulation
   if(atlantisfmsy_completion(func_grp, output_path)!=1)
-    stop(paste0("You did not finished Fmsy simulation for the functional group:", func_grp,". Please run atlantisfmy_simurestart."))
+    stop(paste0("You did not finished Fmsy simulation for the functional group: ", func_grp,". Please run atlantisfmy_simurestart."))
 
   if(compareFsq | compareYFsq) {  # path running parameters file.
     infilename <- atlantis_paraselect(simu_path, exe_name, "-r")
