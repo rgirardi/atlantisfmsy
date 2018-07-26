@@ -11,8 +11,8 @@ Description: An estimation of a functional group's Fmsy in Atlantis ecosystem
     (http://www.indiseas.org/, 03/01/2018). It is designed first to gradualy 
     increase F for a particular functional group in the model up to the collapse 
     of the stock. Then, it narrows down the value of Fmsy (in y-1) with a 
-    precision of 10E-02. To do so, it copies/pastes all the files necessary to 
-    run the calibrated model into a seperate directory and then modifies the 
+    precision of two decimals. To do so, it copies/pastes all the files necessary
+    to run the calibrated model into a seperate directory and then modifies the 
     fishing mortality parameter (mFC) of the selected functinoal group in the 
     harvest parameters file within this directory before each simulation. A new 
     name is provided for the output files in the bach/shell file and finally the 
@@ -29,7 +29,9 @@ Description: An estimation of a functional group's Fmsy in Atlantis ecosystem
 Depends: R (>= 3.4.3)
 License: GPL-3
 LazyData: TRUE
-Imports: ncdf4 (>= 1.16),
+Imports: ggplot2 (>= 2.2.1),
+    grid (>= 3.4.4),
+    ncdf4 (>= 1.16),
     qdapRegex (>= 0.7.2),
     stats (>= 3.4.3),
     stringr (>= 1.2.0),

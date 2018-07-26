@@ -107,6 +107,10 @@ atlantis_wsummary = function(path, exe_name) {
 #'   not (0) named \code{active_flt} and one named \code{effortmodel} containing
 #'   the effortmodel option used for each fleet (output from the function
 #'   \code{\link{atlantis_checkf}}).
+#' @param raw.distri If TRUE return the raw value of fishing mortality (F) for
+#'   active fleets (non-active fleets are set to 0), else the distribution of F is
+#'   returned (vector of values between [0-1] and their sum is 1). \strong{Default:}
+#'   FALSE.
 #' @return \code{f_prop} A vector with the proportion of fishing pressure
 #'   applied per each fleet. The order of the fleets is the same as the one used
 #'   in Atlantis.
@@ -122,7 +126,7 @@ atlantis_wsummary = function(path, exe_name) {
 # Function used:
 # - atlantis_openfile (fileselect.R)
 
-atlantis_fdistri = function(func_grp, model_path, harvest_filename, fishing_para) {
+atlantis_fdistri = function(func_grp, model_path, harvest_filename, fishing_para, raw.distri = F) {
   #open harvest file.
   para <- atlantis_openfile(model_path, harvest_filename, paste("mFC_", func_grp, sep = ""))
   params <- para[[1]]
@@ -134,11 +138,13 @@ atlantis_fdistri = function(func_grp, model_path, harvest_filename, fishing_para
 
   #Calculate the distribution of F accross fleets based on harvest parameter file.
   f_prop <- mfc_sp * fishing_para$active_flt #only considered active fleet.
-  if(sum(f_prop) != 0){
-    f_prop <- f_prop / sum(f_prop)
-  } else {
-    warning("You are trying to calculate Fmsy for an unfished functional group (at least in the calibrated model). The package will attribute evenly the fishing pressure across active fleets.")
-    f_prop <- fishing_para$active_flt / sum(fishing_para$active_flt) #if null in calibrated Atlantis model F is distributed equally accross active fleet.
+  if(!raw.distri){
+    if(sum(f_prop) != 0){
+      f_prop <- f_prop / sum(f_prop)
+    } else {
+      warning("You are trying to calculate Fmsy for an unfished functional group (at least in the calibrated model). The package will attribute evenly the fishing pressure across active fleets.")
+      f_prop <- fishing_para$active_flt / sum(fishing_para$active_flt) #if null in calibrated Atlantis model F is distributed equally accross active fleet.
+    }
   }
   gc()
   return(f_prop)

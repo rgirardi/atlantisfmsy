@@ -4,7 +4,8 @@
 \alias{atlantis_fdistri}
 \title{Atlantis F distribution.}
 \usage{
-atlantis_fdistri(func_grp, model_path, harvest_filename, fishing_para)
+atlantis_fdistri(func_grp, model_path, harvest_filename, fishing_para,
+  raw.distri = F)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -25,6 +26,11 @@ file plus two extra columns, one to indicate if the fleet is active (1) or
 not (0) named \code{active_flt} and one named \code{effortmodel} containing
 the effortmodel option used for each fleet (output from the function
 \code{\link{atlantis_checkf}}).}
+
+\item{raw.distri}{If TRUE return the raw value of fishing mortality (F) for
+active fleets (non-active fleets are set to 0), else the distribution of F is
+returned (vector of values between [0-1] and their sum is 1). \strong{Default:}
+FALSE.}
 }
 \value{
 \code{f_prop} A vector with the proportion of fishing pressure

@@ -7,10 +7,10 @@
 #'   Fulton (CSIRO) for the IndiSeas project (\url{http://www.indiseas.org/},
 #'   accessed 03/01/2018). It is designed first to gradualy increase F for a
 #'   particular functional group in the model up to the collapse of the stock.
-#'   Then, it narrows down the value of Fmsy (in y-1) up to three digits. To do
-#'   so, it copies/pastes all the files necessary to run the calibrated model
-#'   into a seperate directory and then modifies the parameter files in this
-#'   directory before each simulation.
+#'   Then, it narrows down the value of Fmsy (in y-1) with a precision of two
+#'   decimals. To do so, it copies/pastes all the files necessary to run the
+#'   calibrated model into a seperate directory and then modifies the parameter
+#'   files in this directory before each simulation.
 #'  @section Warning:
 #'   At the moment, the package is not designed to run on OSX, it only
 #'   works on Linux and Windows (To run on OSX these functions need to be
