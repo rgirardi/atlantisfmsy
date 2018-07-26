@@ -41,3 +41,5 @@ Suggests: testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/rgirardi/atlantisfmsy
+BugReports: https://github.com/rgirardi/atlantisfmsy/issues
