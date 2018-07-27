@@ -69,7 +69,6 @@ atlantis_openfile = function(path, file_names, para_name) {
   # convert path on Windows to avoid issues with space in path
   path <- pathconvert(path)
 
-  output_path <- pathconvert(output_path)
   infilecon <- file(description = file.path(path, file_names), open = "r+")
   on.exit(close(infilecon))
 
