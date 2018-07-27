@@ -74,6 +74,10 @@
 # - atlantis_fdistri (atlantisfmsy_ini.R)
 
 atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax, compareFsq = F, compareYFsq = F, Fsq_dir = NULL, YFsq = NULL, shading = F, perc = F, addarrow = F){
+  # convert path on Windows to avoid issues with space in path
+  folder_path <- pathconvert(folder_path)
+  model_path <- pathconvert(model_path)
+
   # Check os used.
   os <- Sys.info()['sysname']
 

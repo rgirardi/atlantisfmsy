@@ -36,6 +36,10 @@
 
 atlantis_dietextract <- function(path, exe_name, save.out = F, output_path = NULL){
 
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(path)
+  output_path <- pathconvert(output_path)
+
   # path of csv functional groups settings
   infilename <- atlantis_paraselect(path, exe_name, "-s")
 

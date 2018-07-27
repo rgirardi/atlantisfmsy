@@ -26,6 +26,9 @@
 #' @export
 
 atlantis_paraselect = function(path, exe_name, index, os = Sys.info()['sysname']) {
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(path)
+
   #find the Atlantis run bach file
   if (os == "Windows") {
     infilename <- list.files(path)[regexpr(".bat", list.files(path), fixed = T) != -1] #Windows
@@ -63,6 +66,10 @@ atlantis_paraselect = function(path, exe_name, index, os = Sys.info()['sysname']
 #' @export
 
 atlantis_openfile = function(path, file_names, para_name) {
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(path)
+
+  output_path <- pathconvert(output_path)
   infilecon <- file(description = file.path(path, file_names), open = "r+")
   on.exit(close(infilecon))
 

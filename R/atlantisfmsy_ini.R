@@ -25,6 +25,9 @@
 # - atlantis_openfile (fileselect.R)
 
 atlantis_runtime = function(path, exe_name, run_time) {
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(path)
+
   #selection of Atlantis parameters file.
   infilename <- atlantis_paraselect(path, exe_name, "-r") #looking for run parameters file.
 
@@ -67,6 +70,9 @@ atlantis_runtime = function(path, exe_name, run_time) {
 # - atlantis_openfile (fileselect.R)
 
 atlantis_wsummary = function(path, exe_name) {
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(path)
+
   #selection of Atlantis parameters file.
   infilename <- atlantis_paraselect(path, exe_name, "-r") #looking for run parameters file.
 
@@ -127,6 +133,9 @@ atlantis_wsummary = function(path, exe_name) {
 # - atlantis_openfile (fileselect.R)
 
 atlantis_fdistri = function(func_grp, model_path, harvest_filename, fishing_para, raw.distri = F) {
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(model_path)
+
   #open harvest file.
   para <- atlantis_openfile(model_path, harvest_filename, paste("mFC_", func_grp, sep = ""))
   params <- para[[1]]

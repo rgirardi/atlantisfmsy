@@ -43,6 +43,9 @@
 # - atlantis_openfile (fileselect.R)
 
 atlantisfmsy_modelcopy = function(func_grp, folder_path, model_path, exe_name, os = Sys.info()['sysname']) {
+  # convert path on Windows to avoid issues with space in path
+  folder_path <- pathconvert(folder_path)
+  model_path <- pathconvert(model_path)
 
   gwd_ini <- getwd()
   #create the folder to store Fmsy simulations.
@@ -106,4 +109,28 @@ atlantisfmsy_modelcopy = function(func_grp, folder_path, model_path, exe_name, o
   setwd(gwd_ini)
   gc()
   return(simu_path)
+}
+
+
+#' Convert paths into shortform on Windows to deals with space in path
+#'
+#' @description Convert the path \code{path} into the shortform to deals with space
+#'   issues in Windows OS path. First the function check the OS to see if it's
+#'   Windows and then it check if the path isn't NULL.
+#' @param path path to convert
+#' @return \code{path} converted path.
+#' @note This is only working if the path already exist on your machine. If not, will
+#' return path with double backslashes instead of slash but keep the space in the
+#' path.
+#' @examples
+#' pathconvert("C:/Atlantis/AtlantisEEC")
+#'
+#' \dontrun{pathconvert("/home/Atlantis/AtlantisEEC") # for UNIX}
+#'
+#' @seealso \code{\link[utils]{shortPathName}} to Convert file paths to the short
+#' form.
+
+pathconvert <- function(path){
+  if(Sys.info()['sysname'] == "Windows" & !is.null(path)) path <- utils::shortPathName(path)
+  return(path)
 }

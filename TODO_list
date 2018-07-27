@@ -35,6 +35,4 @@ _ could increase perf by calling directly the right method (like aggregate.data.
 
 - add an option to store only the data needed for Fmsy search (5 last years)
 
-- add function shortPathName for every exported function if run on Windows
-
 - modify vignettes to add plot option

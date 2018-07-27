@@ -81,6 +81,9 @@
 # WARNING doesn't work if files have been transfered to another computer because the date of creation change (see atlantis_lastsimu function). ## CHECK IF COME FROM DOWNLOADING OR ALSO FROM TRANSFERING WITH USB.
 atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fmax, last_run = NULL) {
   # gwd_ini <- getwd()
+  # convert path on Windows to avoid issues with space in path
+  folder_path <- pathconvert(folder_path)
+  model_path <- pathconvert(model_path)
 
   # Check os used.
   os <- Sys.info()['sysname']
