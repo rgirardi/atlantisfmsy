@@ -28,15 +28,17 @@ text-align: justify}
 
 ## Package dependencies
 
-```{r}
+```{r, eval = FALSE}
 library("stringr")
 library("qdapRegex")
 library("ncdf4")
 library("utils")
+library("ggplot2")
+library("grid")
 ```
 
 ## Run the Fmsy simulation
-```{r}
+```{r, eval = FALSE}
 library(atlantisfmsy)
 
 folder_path <- getwd() # where you want to store output of the test (here your current working directory)
@@ -46,7 +48,7 @@ model_path <- system.file("extdata", "setas-model-new-trunk", package = "atlanti
 If you're using this package on UNIX OS (change SETas model windows files into linux one):
 This is also done when the package copy/paste the model's files into your working directory.
 
-```{r}
+```{r, eval = FALSE}
 if(Sys.info()['sysname'] == "Linux"){
       convert <- paste("cd ", model_path, "/", "\n", "flip -uv *", sep = "") #convert Windows text files into Linux text files.
     system(convert)
@@ -54,7 +56,7 @@ if(Sys.info()['sysname'] == "Linux"){
 ```
 
 Choose the functional groups you want to evaluate:
-```{r}
+```{r, eval = FALSE}
 exe_name <- "atlantismain" #executable name might be different on Linux "atlantismainNew"
 group_csv_file <- atlantis_paraselect(model_path, exe_name, "-s") # functional groups csv file from SETas model
 group_csv_data <- read.table(file.path(model_path, group_csv_file), sep = ",", dec = ".", header = T) # load data from parameters file
@@ -67,13 +69,13 @@ func_grp <- group_list[2]
 ```
 
 Select the burning period of your model and the max value of F you want to test;
-```{r}
+```{r, eval = FALSE}
 burnin_time <- 7300 # in days 
 fmax <- 4 # per years
 ```
 
 If using the SETas model example from this package, copy/paste your executable (manually or using the folowing script). Be aware that parameters files in this example are built to run with Atlantis trunk rev **6265** so please compile the model rev 6265 on your computer and then copy/paste the executable. If you are using the example from the old Bec-dev Atlantis code ("setas-model-new") the last version of this code on the wiki will work. 
-```{r}
+```{r, eval = FALSE}
 exe_path <- "C:/Atlantis/code/trunk_rev6261/atlantismain/Debug/atlantismain.exe" #"<your own path>"
 
 if(Sys.info()['sysname'] == "Windows") {
@@ -87,13 +89,13 @@ if(Sys.info()['sysname'] == "Windows") {
 ```
 
 Then run the simulation:
-```{r}
+```{r, eval = FALSE}
 atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time, fmax)
 ```
 
 If your simulation was interrupted (computer shut down, crash...) you can restart the simulations where it stoped. It will rerun the last simulation and keep going with the process of evaluating the F~msy~ value:
 
-```{r}
+```{r, eval = FALSE}
 atlantisfmsy_restart(func_grp, folder_path, model_path, exe_name, fmax)
 
 ```
