@@ -129,6 +129,7 @@ atlantisfmsy_modelcopy = function(func_grp, folder_path, model_path, exe_name, o
 #'
 #' @seealso \code{\link[utils]{shortPathName}} to Convert file paths to the short
 #' form.
+#' @export
 
 pathconvert <- function(path){
   if(Sys.info()['sysname'] == "Windows" & !is.null(path)) path <- utils::shortPathName(path)
