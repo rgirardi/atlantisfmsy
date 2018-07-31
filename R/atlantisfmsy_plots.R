@@ -143,7 +143,7 @@ atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax,
       }
 
       Landing_Fsq <- utils::read.table(output_path, sep = " ", dec = ".", header = T)
-      Landing_Fsq <- mean(Landing_Fsq[Landing_Fsq$Time <= run_time & Landing_Fsq$Time >= run_time-(5*365), func_grp])
+      Landing_Fsq <- mean(Landing_Fsq[Landing_Fsq$Time <= run_time & Landing_Fsq$Time > run_time-(5*365), func_grp])
     } else {
       Landing_Fsq <- YFsq
     }
