@@ -71,7 +71,7 @@ func_grp <- group_list[2]
 Select the burning period of your model and the max value of F you want to test;
 ```{r, eval = FALSE}
 burnin_time <- 7300 # in days 
-fmax <- 4 # per years
+fmax <- 4 # per year
 ```
 
 If using the SETas model example from this package, copy/paste your executable (manually or using the folowing script). Be aware that parameters files in this example are built to run with Atlantis trunk rev **6265** so please compile the model rev 6265 on your computer and then copy/paste the executable. If you are using the example from the old Bec-dev Atlantis code ("setas-model-new") the last version of this code on the wiki will work. 
