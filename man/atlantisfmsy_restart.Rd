@@ -5,7 +5,7 @@
 \title{Restart Fmsy simulation.}
 \usage{
 atlantisfmsy_restart(func_grp, folder_path, model_path, exe_name, fmax,
-  last_run = NULL)
+  last_run = NULL, batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -30,8 +30,12 @@ atlantismain, atlantisNew).}
 
 \item{last_run}{The name of the output file of the last simulation run before
 \code{\link{atlantisfmsy_simu}} stopped. The name of the output have to be
-the same as the one in the batch/shell file used to run Atlantis. The
-default value is NULL.}
+the same as the one in the batch/shell file used to run Atlantis.
+\strong{Default:} NULL.}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 \code{fmsy} The dataframe containing all the values of F (sum of mFC
@@ -64,10 +68,10 @@ atlantisfmsy_restart("COD", "/home/Atlantis/AtlantisEEC",
                      "atlantisNew", 4)
 atlantisfmsy_restart("COD", "C:/Atlantis/AtlantisEEC",
                      "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                     "atlantismain", 4, "MSY_COD_F012.nc")
+                     "atlantismain", 4, "MSY_COD_F012.nc", "runAtlantis.bat")
 atlantisfmsy_restart("COD", "/home/Atlantis/AtlantisEEC",
                      "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                     "atlantisNew", 4, "MSY_COD_F012.nc")
+                     "atlantisNew", 4, "MSY_COD_F012.nc", "runAtlantis.sh")
 
 \dontrun{atlantisfmsy_restart("COD", "C:/Atlantis/AtlantisEEC",
                               "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",

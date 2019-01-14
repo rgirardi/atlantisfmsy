@@ -4,7 +4,6 @@
 \name{atlantisfmsy}
 \alias{atlantisfmsy}
 \alias{atlantisfmsy-package}
-\alias{atlantisfmsy-package}
 \title{atlantisfmsy: Estimate a functional group's Fmsy in Atlantis ecosystem model}
 \description{
 An estimation of a functional group's Fmsy in Atlantis ecosystem

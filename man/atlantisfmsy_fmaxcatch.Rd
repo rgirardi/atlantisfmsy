@@ -4,7 +4,8 @@
 \alias{atlantisfmsy_fmaxcatch}
 \title{Find F with the maximum catch and estimate the next F values to simulate.}
 \usage{
-atlantisfmsy_fmaxcatch(func_grp, path, exe_name, run_time, fmax)
+atlantisfmsy_fmaxcatch(func_grp, path, exe_name, run_time, fmax,
+  batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -21,6 +22,10 @@ atlantismain, atlantisNew).}
 \item{fmax}{The maximal value of F the simulation is going to test in y-1.
 \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 \code{\link{atlantis_bachchange}}).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 It writes on the drive, in the output folder, the file Fnext_simu.txt
@@ -40,14 +45,14 @@ It looks into the output files \code{...TOTCATCH.nc} and
 }
 \examples{
 atlantisfmsy_fmaxcatch("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantismain", 18250, 4)
+ "atlantismain", 18250, 4, "runAtlantis.bat")
 atlantisfmsy_fmaxcatch("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantisNew", 18250, 4)
+ "atlantisNew", 18250, 4, "runAtlantis.sh")
 
 \dontrun{atlantisfmsy_fmaxcatch("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "Windows", "atlantismain", 18250, 10)}
+ "atlantismain", 18250, 10, "runAtlantis.bat")}
 \dontrun{atlantisfmsy_fmaxcatch("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "Linux", "atlantisNew", 18250, 10)}
+ "atlantisNew", 18250, 10, "runAtlantis.sh")}
 }
 \seealso{
 \code{\link{atlantis_paraselect}} for parameters file selection,

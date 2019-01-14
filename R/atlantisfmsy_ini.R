@@ -8,12 +8,15 @@
 #'   atlantismain, atlantisNew).
 #' @param run_time The total duration of the simulation in days
 #'   (\code{burnin_time} + 10950).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return Modify run parameters file.
 #' @examples
 #' atlantis_runtime("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantismain", 18250)
+#'  "atlantismain", 18250, "runAtlantis.bat")
 #' atlantis_runtime("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantisNew", 18250)
+#'  "atlantisNew", 18250, "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link{atlantis_openfile}} to open parameter files and select
@@ -24,12 +27,12 @@
 # - atlantis_paraselect (fileselect.R)
 # - atlantis_openfile (fileselect.R)
 
-atlantis_runtime = function(path, exe_name, run_time) {
+atlantis_runtime = function(path, exe_name, run_time, batch_file = NULL) {
   # convert path on Windows to avoid issues with space in path
   path <- pathconvert(path)
 
   #selection of Atlantis parameters file.
-  infilename <- atlantis_paraselect(path, exe_name, "-r") #looking for run parameters file.
+  infilename <- atlantis_paraselect(path, exe_name, "-r", batch_file) #looking for run parameters file.
 
   para <- atlantis_openfile(path, infilename, "tstop")
   params <- para[[1]]
@@ -53,12 +56,15 @@ atlantis_runtime = function(path, exe_name, run_time) {
 #' @param path The directory of the batch or shell file.
 #' @param exe_name The name of the atlantis executable you used (ex:
 #'   atlantismain, atlantisNew).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return Modify run parameters file.
 #' @examples
-#' atlantis_runtime("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantismain")
-#' atlantis_runtime("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantisNew")
+#' atlantis_wsummary("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
+#'  "atlantismain", "runAtlantis.bat")
+#' atlantis_wsummary("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
+#'  "atlantisNew", "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link{atlantis_openfile}} to open parameter files and select
@@ -69,12 +75,12 @@ atlantis_runtime = function(path, exe_name, run_time) {
 # - atlantis_paraselect (fileselect.R)
 # - atlantis_openfile (fileselect.R)
 
-atlantis_wsummary = function(path, exe_name) {
+atlantis_wsummary = function(path, exe_name, batch_file = NULL) {
   # convert path on Windows to avoid issues with space in path
   path <- pathconvert(path)
 
   #selection of Atlantis parameters file.
-  infilename <- atlantis_paraselect(path, exe_name, "-r") #looking for run parameters file.
+  infilename <- atlantis_paraselect(path, exe_name, "-r", batch_file) #looking for run parameters file.
 
   para <- atlantis_openfile(path, infilename, "tsumout")
   params <- para[[1]]

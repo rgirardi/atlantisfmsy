@@ -12,13 +12,16 @@
 #'   the path structure of your Atlantis input forcing parameters file.
 #' @param exe_name The name of the atlantis executable you used (ex:
 #'   atlantismain, atlantisNew).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{test} A binary variable (1) all the modules are on (0) at least
 #'   one module is off.
 #' @examples
 #' atlantis_checkmodule("C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                      "atlantismain")
+#'                      "atlantismain", "runAtlantis.bat")
 #' atlantis_checkmodule("/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                      "atlantisNew")
+#'                      "atlantisNew", "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link{atlantis_openfile}} to open a parameters file and select a
@@ -28,13 +31,13 @@
 # - atlantis_paraselect (fileselect.R)
 # - atlantis_openfile (fileselect.R)
 
-atlantis_checkmodule = function(model_path, exe_name) {
+atlantis_checkmodule = function(model_path, exe_name, batch_file = NULL) {
 
   #initialize flag check.
-  test <- c(0, 0, 0) # store the value of c("flag_fisheries_on", "flag_skip_biol", "flag_skip_phys") in Atlantis.
+  test <- rep(0, 3) # store the value of c("flag_fisheries_on", "flag_skip_biol", "flag_skip_phys") in Atlantis.
 
   #looking for run parameters file.
-  infilename <- atlantis_paraselect(model_path, exe_name, "-r")
+  infilename <- atlantis_paraselect(model_path, exe_name, "-r", batch_file)
 
   #open run parameters file and check if the fishery module is on in Atlantis.
   para <- atlantis_openfile(model_path, infilename, "flag_fisheries_on")
@@ -87,14 +90,17 @@ atlantis_checkmodule = function(model_path, exe_name) {
 #'   extension (ex: file.prm).
 #' @param run_time The total duration of the simulation in days
 #'   (\code{burnin_time} + 10950).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{fishing_para} A dataframe containing data from the fishing
 #'   fleet csv file plus an extra column to indicate if the fleet is active (1)
 #'   or not (0) named \code{active_flt}.
 #' @examples
 #' atlantis_fleetopen("C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                    "atlantismain", "AEEC_harvest.prm", 18250)
+#'                    "atlantismain", "AEEC_harvest.prm", 18250, "runAtlantis.bat")
 #' atlantis_fleetopen("/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                    "atlantisNew", "AEEC_harvest.prm", 18250)
+#'                    "atlantisNew", "AEEC_harvest.prm", 18250, "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection,
 #'   \code{\link{atlantis_openfile}} to open a parameter file and select a
@@ -107,13 +113,13 @@ atlantis_checkmodule = function(model_path, exe_name) {
 # - atlantis_paraselect (fileselect.R)
 # - atlantis_openfile (fileselect.R)
 
-atlantis_fleetopen = function(path, exe_name, harvest_filename, run_time) {
+atlantis_fleetopen = function(path, exe_name, harvest_filename, run_time, batch_file = NULL) {
   #open harvest file.
   para <- atlantis_openfile(path, harvest_filename, "_tStart")
   params <- para[[1]]
   idxline <- para[[2]]
 
-  infilename <- atlantis_paraselect(path, exe_name, "-q") #looking for fishing parameters csv file.
+  infilename <- atlantis_paraselect(path, exe_name, "-q", batch_file) #looking for fishing parameters csv file.
   fishing_para <- utils::read.table(file.path(path, infilename), sep = ",", header = T)
   names(fishing_para) <- tolower(names(fishing_para))
 
@@ -142,13 +148,16 @@ atlantis_fleetopen = function(path, exe_name, harvest_filename, run_time) {
 #' @param path The directory of the batch or shell file.
 #' @param exe_name The name of the atlantis executable you used (ex:
 #'   atlantismain, atlantisNew).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{fgrpon} A binary variable telling if the functional group is
 #'   (1) activated or not (0).
 #' @examples
 #' atlantis_fgrpon("COD", "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                 "atlantismain")
+#'                 "atlantismain", "runAtlantis.bat")
 #' atlantis_fgrpon("COD", "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                 "atlantisNew")
+#'                 "atlantisNew", "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link[utils]{read.table}} to open table stored in text files (.txt,
@@ -157,8 +166,8 @@ atlantis_fleetopen = function(path, exe_name, harvest_filename, run_time) {
 # Function used:
 # - atlantis_paraselect (fileselect.R)
 
-atlantis_fgrpon = function(func_grp, path, exe_name) {
-  infilename <- atlantis_paraselect(path, exe_name, "-s") #looking for functional groups parameter csv file.
+atlantis_fgrpon = function(func_grp, path, exe_name, batch_file = NULL) {
+  infilename <- atlantis_paraselect(path, exe_name, "-s", batch_file) #looking for functional groups parameter csv file.
   fgrp_para <- utils::read.table(file.path(path, infilename), sep = ",", header = T)
   names(fgrp_para) <- tolower(names(fgrp_para))
   fgrpon <-  fgrp_para$isturned[fgrp_para$code == func_grp]
@@ -178,13 +187,16 @@ atlantis_fgrpon = function(func_grp, path, exe_name) {
 #'   be estimated.
 #' @param exe_name The name of the atlantis executable you used (ex:
 #'   atlantismain, atlantisNew).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{fgrpimp} A binary variable telling if the functional group is
 #'   (1) fished and impacted or not (0).
 #' @examples
 #' atlantis_fgrpimp("COD", "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                  "atlantismain")
+#'                  "atlantismain", "runAtlantis.bat")
 #' atlantis_fgrpimp("COD", "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                  "atlantisNew")
+#'                  "atlantisNew", "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link[utils]{read.table}} to open table stored in text files (.txt,
@@ -193,9 +205,9 @@ atlantis_fgrpon = function(func_grp, path, exe_name) {
 # Function used:
 # - atlantis_paraselect (fileselect.R)
 
-atlantis_fgrpimp = function(func_grp, path, exe_name) {
+atlantis_fgrpimp = function(func_grp, path, exe_name, batch_file = NULL) {
 
-  infilename <- atlantis_paraselect(path, exe_name, "-s") #looking for functional groups parameter csv file.
+  infilename <- atlantis_paraselect(path, exe_name, "-s", batch_file) #looking for functional groups parameter csv file.
   fgrp_para <- utils::read.table(file.path(path, infilename), sep = ",", header = T)
   names(fgrp_para) <- tolower(names(fgrp_para))
   fgrpimp <-  fgrp_para$isfished[fgrp_para$code == func_grp] * fgrp_para$isimpacted[fgrp_para$code == func_grp]
@@ -265,13 +277,16 @@ atlantis_checkf = function(path, harvest_filename, fishing_para) {
 #'   atlantismain, atlantisNew).
 #' @param run_time The total duration of the simulation in days
 #'   (\code{burnin_time} + 10950).
+#' @param batch_file The name of the batch/shell file you are using to run your
+#'   model. If not provided, the function will search for the unique batch file
+#'   in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{biom_sp} The average biomass of the 5 last years of simulation.
 #'   Return 0 if \code{biom_sp} < 0.1.
 #' @examples
 #' atlantis_avbiomsp("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'                   "atlantismain", 18250)
+#'                   "atlantismain", 18250, "runAtlantis.bat")
 #' atlantis_avbiomsp("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'                   "atlantisNew", 18250)
+#'                   "atlantisNew", 18250, "runAtlantis.sh")
 #'
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link[utils]{read.table}} to open table stored in text files (.txt,
@@ -280,8 +295,8 @@ atlantis_checkf = function(path, harvest_filename, fishing_para) {
 # Function used:
 # - atlantis_paraselect (fileselect.R)
 
-atlantis_avbiomsp = function(func_grp, path, exe_name, run_time) {
-  output_path <- atlantis_paraselect(path, exe_name, "-o")
+atlantis_avbiomsp = function(func_grp, path, exe_name, run_time, batch_file = NULL) {
+  output_path <- atlantis_paraselect(path, exe_name, "-o", batch_file)
   output_path <- gsub(".nc", "BiomIndx.txt", output_path)
 
   biom_sp <- utils::read.table(file.path(path, output_path), dec = ".", header = T)

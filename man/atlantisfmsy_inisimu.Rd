@@ -6,7 +6,7 @@
 \usage{
 atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name,
   harvest_filename, run_time, f_prop, fmax, fmin, fishing_para,
-  os = Sys.info()["sysname"])
+  batch_file = NULL, os = Sys.info()["sysname"])
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -75,11 +75,11 @@ In the directory \code{folder_path}, it creates the folder
 atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-   fishing_para, "Windows")
+   fishing_para, "runAtlantis.bat", "Windows")
 atlantisfmsy_inisimu("COD", "/home/Atlantis/AtlantisEEC/",
  "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantisNew",
   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-   fishing_para, "Linux")
+   fishing_para, "runAtlantis.sh", "Linux")
 
 \dontrun{atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",

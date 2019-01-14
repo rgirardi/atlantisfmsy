@@ -6,7 +6,7 @@
 \usage{
 atlantisfmsy_plot(func_grp, folder_path, model_path, exe_name, fmax,
   compareFsq = F, compareYFsq = F, Fsq_dir = NULL, YFsq = NULL,
-  shading = F, perc = F, addarrow = F)
+  shading = F, perc = F, addarrow = F, batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -62,6 +62,10 @@ yield at Fsq and Fmsy. \strong{Default:} FALSE.}
 
 \item{addarrow}{If TRUE display arrow between Fsq and Fmsy and Yield at Fsq and
 Fmsy. \strong{Default:} FALSE. Only displayed if \code{perc} is TRUE.}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 \code{gt} A TableGrod object ("gtable") plotting the yield (Landing) as a

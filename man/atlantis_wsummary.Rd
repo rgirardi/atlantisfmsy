@@ -4,13 +4,17 @@
 \alias{atlantis_wsummary}
 \title{Change writing stock state summary periodicity.}
 \usage{
-atlantis_wsummary(path, exe_name)
+atlantis_wsummary(path, exe_name, batch_file = NULL)
 }
 \arguments{
 \item{path}{The directory of the batch or shell file.}
 
 \item{exe_name}{The name of the atlantis executable you used (ex:
 atlantismain, atlantisNew).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 Modify run parameters file.
@@ -21,10 +25,10 @@ Change writing stock state summary periodicity in the run
   \code{tsumout} parameter and replaces his value by: 365 days.
 }
 \examples{
-atlantis_runtime("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantismain")
-atlantis_runtime("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantisNew")
+atlantis_wsummary("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
+ "atlantismain", "runAtlantis.bat")
+atlantis_wsummary("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
+ "atlantisNew", "runAtlantis.sh")
 
 }
 \seealso{

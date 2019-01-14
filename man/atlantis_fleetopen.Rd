@@ -4,7 +4,8 @@
 \alias{atlantis_fleetopen}
 \title{Test if the fleets are active.}
 \usage{
-atlantis_fleetopen(path, exe_name, harvest_filename, run_time)
+atlantis_fleetopen(path, exe_name, harvest_filename, run_time,
+  batch_file = NULL)
 }
 \arguments{
 \item{path}{The directory of the batch or shell file.}
@@ -17,6 +18,10 @@ extension (ex: file.prm).}
 
 \item{run_time}{The total duration of the simulation in days
 (\code{burnin_time} + 10950).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 \code{fishing_para} A dataframe containing data from the fishing
@@ -33,9 +38,9 @@ Test if at least one fleet is open in Atlantis. It opens the
 }
 \examples{
 atlantis_fleetopen("C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                   "atlantismain", "AEEC_harvest.prm", 18250)
+                   "atlantismain", "AEEC_harvest.prm", 18250, "runAtlantis.bat")
 atlantis_fleetopen("/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                   "atlantisNew", "AEEC_harvest.prm", 18250)
+                   "atlantisNew", "AEEC_harvest.prm", 18250, "runAtlantis.sh")
 
 }
 \seealso{

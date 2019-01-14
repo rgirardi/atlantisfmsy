@@ -49,9 +49,11 @@
 #'   yield at Fsq and Fmsy. \strong{Default:} FALSE.
 #' @param addarrow If TRUE display arrow between Fsq and Fmsy and Yield at Fsq and
 #'   Fmsy. \strong{Default:} FALSE. Only displayed if \code{perc} is TRUE.
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{gt} A TableGrod object ("gtable") plotting the yield (Landing) as a
 #'   function of the  fishing mortality and plot the figure.
-#' @examples
 
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection,
 #'   \code{\link{atlantis_openfile}} to open a parameters file and selecta parameter,
@@ -73,7 +75,7 @@
 # - atlantis_checkf (fileselect.R)
 # - atlantis_fdistri (atlantisfmsy_ini.R)
 
-atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax, compareFsq = F, compareYFsq = F, Fsq_dir = NULL, YFsq = NULL, shading = F, perc = F, addarrow = F){
+atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax, compareFsq = F, compareYFsq = F, Fsq_dir = NULL, YFsq = NULL, shading = F, perc = F, addarrow = F, batch_file = NULL){
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
   model_path <- pathconvert(model_path)
@@ -90,7 +92,7 @@ atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax,
   simu_path <- file.path(folder_path, "AtlantisMSY", func_grp)
 
   # Get output_path
-  output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o"), "/"))  #search for the output directory in bach file.
+  output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o", batch_file), "/"))  #search for the output directory in bach file.
   output_path <- file.path(simu_path, output_path[-length(output_path)])
 
   # Check for completion of the Fmsy simulation
@@ -98,7 +100,7 @@ atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax,
     stop(paste0("You did not finished Fmsy simulation for the functional group: ", func_grp,". Please run atlantisfmy_simurestart."))
 
   if(compareFsq | compareYFsq) {  # path running parameters file.
-    infilename <- atlantis_paraselect(simu_path, exe_name, "-r")
+    infilename <- atlantis_paraselect(simu_path, exe_name, "-r", batch_file)
 
     # Extract running time from previous run.
     para <- atlantis_openfile(simu_path, infilename, "tstop")
@@ -110,8 +112,8 @@ atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax,
     run_time <- as.numeric(line_para[grep("[0-9]+", line_para)[1]])
 
     # look for open fleets and and check if they are using fishing mortality as proxy of fishing pressure
-    harvest_filename <- atlantis_paraselect(model_path, exe_name, "-h") #looking for harvest parameters file.
-    fishing_para <- atlantis_fleetopen(model_path, exe_name, harvest_filename, run_time) #check if fleets turn on.
+    harvest_filename <- atlantis_paraselect(model_path, exe_name, "-h", batch_file) #looking for harvest parameters file.
+    fishing_para <- atlantis_fleetopen(model_path, exe_name, harvest_filename, run_time, batch_file) #check if fleets turn on.
     if(sum(fishing_para$active_flt) == 0)
       stop("No fleet is active in your model please change your harvest parameters file.")
 
@@ -135,7 +137,7 @@ atlantisfmsy_plot <- function(func_grp, folder_path, model_path, exe_name, fmax,
     # Get landing at Fsq
     if(is.null(YFsq)) {
       if(is.null(Fsq_dir)){
-        output_path <- unlist(strsplit(atlantis_paraselect(model_path, exe_name, "-o"), "/"))
+        output_path <- unlist(strsplit(atlantis_paraselect(model_path, exe_name, "-o", batch_file), "/"))
         file_name <- gsub(".nc", "Catch.txt", output_path)[2]
         output_path <- file.path(model_path, output_path[-length(output_path)], file_name)
       } else {

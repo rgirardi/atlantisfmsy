@@ -5,7 +5,7 @@
 \title{Fmsy estimation in Atlantis ecosystem model.}
 \usage{
 atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time,
-  fmax, fmin = NULL, restart = 0)
+  fmax, batch_file = NULL, fmin = NULL, restart = 0)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -30,6 +30,10 @@ before starting the additional 30 years of simulation.}
 \item{fmax}{The maximal value of F the simulation is going to test in y-1.
 \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 \code{\link{atlantis_bachchange}}).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 
 \item{fmin}{The minimum value of F to test in y-1 (only used when the
 simulation are restarted after an interruption). The default value is NULL.}
@@ -64,24 +68,25 @@ Run set of simulations to estimate Fmsy in an Atlantis model for
   modified: \code{\link{atlantisfmsy_simu}},
   \code{\link{atlantisfmsy_restart}}, \code{\link{atlantisfmsy_modelcopy}},
   \code{\link{atlantis_bachchange}}, and \code{\link{atlantis_paraselect}}).
-  As well this package required that only one bach/shell file is in the model
-  directory (if more than one bach/shell files are present please remove
-  them, leave only the one used to run the calibrated model).
+  As well if you are not providing the name of your bach/shell file, this
+  package required that only one batch/shell file is in the model directory
+  (if more than one batch/shell files are present please remove them, leave
+  only the one used to run the calibrated model).
 }
 \examples{
 atlantisfmsy_simu("COD", "C:/Atlantis/AtlantisEEC/Fmsy",
                   "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                  "atlantismain", 7300, 4)
+                  "atlantismain", 7300, 4, "runAtlantis.bat")
 atlantisfmsy_simu("COD", "/home/Atlantis/AtlantisEEC/Fmsy",
                   "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                  "atlantisNew", 7300, 4)
+                  "atlantisNew", 7300, 4, "runAtlantis.sh")
 
 \dontrun{atlantisfmsy_simu("COD", "C:/Atlantis/AtlantisEEC/Fmsy",
                            "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                           "atlantismain", 7300, 10)}
+                           "atlantismain", 7300, 10, "runAtlantis.bat")}
 \dontrun{atlantisfmsy_simu("COD", "/home/Atlantis/AtlantisEEC/Fmsy",
                            "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                           "atlantisNew", 7300, 10)}
+                           "atlantisNew", 7300, 10, "runAtlantis.sh")}
 }
 \seealso{
 \code{\link{atlantis_checkmodule}} to check if all the modules are

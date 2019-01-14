@@ -4,7 +4,7 @@
 \alias{atlantis_fgrpimp}
 \title{Test if functional groups is fished and impacted.}
 \usage{
-atlantis_fgrpimp(func_grp, path, exe_name)
+atlantis_fgrpimp(func_grp, path, exe_name, batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -14,6 +14,10 @@ be estimated.}
 
 \item{exe_name}{The name of the atlantis executable you used (ex:
 atlantismain, atlantisNew).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 \code{fgrpimp} A binary variable telling if the functional group is
@@ -27,9 +31,9 @@ Test if the functional group \code{func_grp} is fished and
 }
 \examples{
 atlantis_fgrpimp("COD", "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                 "atlantismain")
+                 "atlantismain", "runAtlantis.bat")
 atlantis_fgrpimp("COD", "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                 "atlantisNew")
+                 "atlantisNew", "runAtlantis.sh")
 
 }
 \seealso{

@@ -3,10 +3,6 @@
 #' @description It looks for the names of the parameters file wanted within the
 #'   batch or shell file used to run Atlantis.
 #' @param path The directory of the batch or shell file.
-#' @param os The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
-#'   At the moment, the package is not designed to run on OSX (see
-#'   \code{\link{atlantisfmsy_modelcopy}}, and
-#'   \code{\link{atlantis_bachchange}}.
 #' @param exe_name The name of the atlantis executable you used (ex:
 #'   atlantismain, atlantisNew).
 #' @param index The index used by Atlantis to determine the type of the
@@ -14,26 +10,38 @@
 #'   condition file; -o output files; -r run file; -f forcing file; -p physics
 #'   file; -b biology file; -s functional groups csv file; -h fishing file; -q
 #'   fisheries csv file...).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
+#' @param os The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
+#'   At the moment, the package is not designed to run on OSX (see
+#'   \code{\link{atlantisfmsy_modelcopy}}, and
+#'   \code{\link{atlantis_bachchange}}.
 #' @return \code{infilename} The name of the parameters file selected.
 #' @examples
 #' atlantis_paraselect("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'                     "atlantismain", "-h", "Windows")
+#'                     "atlantismain", "-h", "runAtlantis.bat","Windows")
 #' atlantis_paraselect("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'                     "atlantisNew", "-h", "Linux")
+#'                     "atlantisNew", "-h", "runAtlantis.sh", "Linux")
 #'
 #' \dontrun{atlantis_paraselect("/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'                              "atlantismain", "-h", "Darwin") # for OSX.}
+#'                              "atlantismain", "-h", "runAtlantis.sh", "Darwin")
+#'                              # for OSX.}
 #' @export
 
-atlantis_paraselect = function(path, exe_name, index, os = Sys.info()['sysname']) {
+atlantis_paraselect = function(path, exe_name, index, batch_file = NULL, os = Sys.info()['sysname']) {
   # convert path on Windows to avoid issues with space in path
   path <- pathconvert(path)
 
   #find the Atlantis run bach file
-  if (os == "Windows") {
-    infilename <- list.files(path)[regexpr(".bat", list.files(path), fixed = T) != -1] #Windows
+  if(is.null(batch_file)) {
+    if (os == "Windows") {
+      infilename <- list.files(path)[regexpr(".bat", list.files(path), fixed = T) != -1] #Windows
+    } else {
+      infilename <- list.files(path)[regexpr(".sh", list.files(path), fixed = T) != -1] #Linux
+    }
   } else {
-    infilename <- list.files(path)[regexpr(".sh", list.files(path), fixed = T) != -1] #Linux
+    infilename <- batch_file
   }
 
   para <- atlantis_openfile(path, infilename, exe_name)

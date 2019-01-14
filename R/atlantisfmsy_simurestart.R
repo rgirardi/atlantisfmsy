@@ -27,8 +27,11 @@
 #'   \code{\link{atlantis_bachchange}}).
 #' @param last_run The name of the output file of the last simulation run before
 #'   \code{\link{atlantisfmsy_simu}} stopped. The name of the output have to be
-#'   the same as the one in the batch/shell file used to run Atlantis. The
-#'   default value is NULL.
+#'   the same as the one in the batch/shell file used to run Atlantis.
+#'   \strong{Default:} NULL.
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return \code{fmsy} The dataframe containing all the values of F (sum of mFC
 #'   parameter value in y-1) tested and the average yearly catch of the 5 last
 #'   years of simulation. As well, a message with the Fmsy value for the
@@ -43,10 +46,10 @@
 #'                      "atlantisNew", 4)
 #' atlantisfmsy_restart("COD", "C:/Atlantis/AtlantisEEC",
 #'                      "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                      "atlantismain", 4, "MSY_COD_F012.nc")
+#'                      "atlantismain", 4, "MSY_COD_F012.nc", "runAtlantis.bat")
 #' atlantisfmsy_restart("COD", "/home/Atlantis/AtlantisEEC",
 #'                      "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                      "atlantisNew", 4, "MSY_COD_F012.nc")
+#'                      "atlantisNew", 4, "MSY_COD_F012.nc", "runAtlantis.sh")
 #'
 #' \dontrun{atlantisfmsy_restart("COD", "C:/Atlantis/AtlantisEEC",
 #'                               "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
@@ -79,7 +82,7 @@
 # - atlantisfmsy_simu (simu.R)
 
 # WARNING doesn't work if files have been transfered to another computer because the date of creation change (see atlantis_lastsimu function). ## CHECK IF COME FROM DOWNLOADING OR ALSO FROM TRANSFERING WITH USB.
-atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fmax, last_run = NULL) {
+atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fmax, last_run = NULL, batch_file = NULL) {
   # gwd_ini <- getwd()
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
@@ -92,7 +95,7 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
     stop("This script is not developped to work on iOS. Several modifications are required to copy files and directories, and run Atlantis.")
 
   # Check if functional group on in calibrated model.
-  if(atlantis_fgrpon(func_grp, model_path, exe_name) == 0)
+  if(atlantis_fgrpon(func_grp, model_path, exe_name, batch_file) == 0)
     stop(paste("The functional group ", func_grp, " is turned off in the calibrated model.", sep = ""))
 
   # test if simulations for func_grp already exist.
@@ -110,7 +113,7 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
   simu_path <- file.path(folder_path, "AtlantisMSY", func_grp)
 
   # path running parameters file.
-  infilename <- atlantis_paraselect(simu_path, exe_name, "-r")
+  infilename <- atlantis_paraselect(simu_path, exe_name, "-r", batch_file)
 
   # Extract running time from previous run.
   para <- atlantis_openfile(simu_path, infilename, "tstop")
@@ -137,7 +140,7 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
   write(params, file.path(simu_path, infilename))
 
   # search for the output directory in bach file.
-  output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o"), "/"))
+  output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o", batch_file), "/"))
   output_path <- output_path[-length(output_path)]
   output_path <- paste(simu_path, output_path, sep = "/")
 
@@ -166,9 +169,9 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
         utils::write.table(f_simu, file.path(output_path,"Fnext_simu.txt"), sep = ",", dec = ".", row.names = F)
       }
     }
-    fmsy <- atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, restart = 1) # restart at the second stage: MSY estimation.
+    fmsy <- atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, batch_file, restart = 1) # restart at the second stage: MSY estimation.
   } else {
-    fmsy <- atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, fmin = fmin) # restart the function atlantisfmsy_inisimu (first stage: collapse estimation) with fmin as the starting point of the simulation sequency.
+    fmsy <- atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, batch_file, fmin = fmin) # restart the function atlantisfmsy_inisimu (first stage: collapse estimation) with fmin as the starting point of the simulation sequency.
   }
 
   gc()
