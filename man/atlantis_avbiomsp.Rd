@@ -4,7 +4,7 @@
 \alias{atlantis_avbiomsp}
 \title{Test if the functional group biomass collapsed.}
 \usage{
-atlantis_avbiomsp(func_grp, path, exe_name, run_time)
+atlantis_avbiomsp(func_grp, path, exe_name, run_time, batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -17,6 +17,10 @@ atlantismain, atlantisNew).}
 
 \item{run_time}{The total duration of the simulation in days
 (\code{burnin_time} + 10950).}
+
+\item{batch_file}{The name of the batch/shell file you are using to run your
+model. If not provided, the function will search for the unique batch file
+in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 \code{biom_sp} The average biomass of the 5 last years of simulation.
@@ -30,9 +34,9 @@ It opens the output file \code{BiomIndx.txt} and calculates the
 }
 \examples{
 atlantis_avbiomsp("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-                  "atlantismain", 18250)
+                  "atlantismain", 18250, "runAtlantis.bat")
 atlantis_avbiomsp("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-                  "atlantisNew", 18250)
+                  "atlantisNew", 18250, "runAtlantis.sh")
 
 }
 \seealso{

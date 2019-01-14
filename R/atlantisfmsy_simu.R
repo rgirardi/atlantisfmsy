@@ -17,9 +17,10 @@
 #'   modified: \code{\link{atlantisfmsy_simu}},
 #'   \code{\link{atlantisfmsy_restart}}, \code{\link{atlantisfmsy_modelcopy}},
 #'   \code{\link{atlantis_bachchange}}, and \code{\link{atlantis_paraselect}}).
-#'   As well this package required that only one bach/shell file is in the model
-#'   directory (if more than one bach/shell files are present please remove
-#'   them, leave only the one used to run the calibrated model).
+#'   As well if you are not providing the name of your bach/shell file, this
+#'   package required that only one batch/shell file is in the model directory
+#'   (if more than one batch/shell files are present please remove them, leave
+#'   only the one used to run the calibrated model).
 #' @param func_grp The code of the Atlantis functional group for which Fmsy will
 #'   be estimated.
 #' @param folder_path The working directory: where the Fmsy simulations will be
@@ -37,6 +38,9 @@
 #' @param fmax The maximal value of F the simulation is going to test in y-1.
 #'   \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 #'   \code{\link{atlantis_bachchange}}).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @param fmin The minimum value of F to test in y-1 (only used when the
 #'   simulation are restarted after an interruption). The default value is NULL.
 #' @param restart a flag indicating if the simulation is restarted from an
@@ -51,17 +55,17 @@
 #' @examples
 #' atlantisfmsy_simu("COD", "C:/Atlantis/AtlantisEEC/Fmsy",
 #'                   "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                   "atlantismain", 7300, 4)
+#'                   "atlantismain", 7300, 4, "runAtlantis.bat")
 #' atlantisfmsy_simu("COD", "/home/Atlantis/AtlantisEEC/Fmsy",
 #'                   "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                   "atlantisNew", 7300, 4)
+#'                   "atlantisNew", 7300, 4, "runAtlantis.sh")
 #'
 #' \dontrun{atlantisfmsy_simu("COD", "C:/Atlantis/AtlantisEEC/Fmsy",
 #'                            "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                            "atlantismain", 7300, 10)}
+#'                            "atlantismain", 7300, 10, "runAtlantis.bat")}
 #' \dontrun{atlantisfmsy_simu("COD", "/home/Atlantis/AtlantisEEC/Fmsy",
 #'                            "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                            "atlantisNew", 7300, 10)}
+#'                            "atlantisNew", 7300, 10, "runAtlantis.sh")}
 #' @seealso \code{\link{atlantis_checkmodule}} to check if all the modules are
 #'   on (physics, biology, and fishery), \code{\link{atlantis_fgrpon}} to check
 #'   if the functional group is active, \code{\link{atlantis_fgrpimp}} to check
@@ -100,7 +104,7 @@
 # - atlantis_fchange (core.R)
 # - atlantis_bachchange (core.R)
 
-atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, fmin = NULL, restart = 0) {
+atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, batch_file = NULL, fmin = NULL, restart = 0) {
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
   model_path <- pathconvert(model_path)
@@ -115,36 +119,38 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
   if(length(grep(exe_name, list.files(model_path))) == 0)
     stop("Verify that model_path is the correct path to your calibrated model folder. If it is, verify that exe_name is the correct name of atlantis executable and that the executable is in the folder. Then run atlantisfmsy_simu again.")
 
+  # Check if there is more than one shell/batch file in the model directory.
+  if(is.null(batch_file)){
+    if(os == "Windows"){
+      if(length(list.files(model_path)[regexpr(".bat", list.files(model_path), fixed = T) != -1]) != 1)
+        stop("More than one batch file exist in the model directory. Please remove the one not used to run the model.")
+    } else {
+      if(length(list.files(model_path)[regexpr(".sh", list.files(model_path), fixed = T) != -1]) != 1)
+        stop("More than one shell file exist in the model directory. Please remove the one not used to run the model.")
+    }
+  }
+
   # Check if physics, biology and fishery modules are activated in Atlantis.
-  if(atlantis_checkmodule(model_path, exe_name) == 0)
-    stop(paste("Please check the file ", atlantis_paraselect(model_path, exe_name, "-r"), ", at least one of the following modules is not running in the calibrated model: physics, biology or fishery.", sep = ""))
+  if(atlantis_checkmodule(model_path, exe_name, batch_file) == 0)
+    stop(paste("Please check the file ", atlantis_paraselect(model_path, exe_name, "-r", batch_file), ", at least one of the following modules is not running in the calibrated model: physics, biology or fishery.", sep = ""))
 
   # Check if functional group on in calibrated model.
-  if(atlantis_fgrpon(func_grp, model_path, exe_name) == 0)
+  if(atlantis_fgrpon(func_grp, model_path, exe_name, batch_file) == 0)
     stop(paste("The functional group ", func_grp, " is turned off in the calibrated model.", sep = ""))
 
   # Check if functional group is fished and impacted in the calibrated model.
-  if(atlantis_fgrpimp(func_grp, model_path, exe_name) == 0)
-    stop(paste("The functional group ", func_grp, " is either not fished or not impacted. If you still want to estimate the Fmsy for that functional group please modify the file ", atlantis_paraselect(model_path, exe_name, "-s"), " to turn on IsFished and IsImpacted. If you want to apply a particular distribution of the fishing pressure accross your fleets please fill the parameter mFC for that functional group with the distribution you want to apply. If you wnat to keep the F distributes uniformly accross fleets leave all the values in the vector mFC equal to 0. Then run the function atlantisfmsy_simu again.", sep = ""))
+  if(atlantis_fgrpimp(func_grp, model_path, exe_name, batch_file) == 0)
+    stop(paste("The functional group ", func_grp, " is either not fished or not impacted. If you still want to estimate the Fmsy for that functional group please modify the file ", atlantis_paraselect(model_path, exe_name, "-s", batch_file), " to turn on IsFished and IsImpacted. If you want to apply a particular distribution of the fishing pressure accross your fleets please fill the parameter mFC for that functional group with the distribution you want to apply. If you wnat to keep the F distributes uniformly accross fleets leave all the values in the vector mFC equal to 0. Then run the function atlantisfmsy_simu again.", sep = ""))
 
   # Check if simulation folder already exist or not. If it exist and atlantisfmsy_restart wasn't use, ask to delete the folder and stop the script.
   if(paste(folder_path, "AtlantisMSY", func_grp, sep = "/") %in% list.dirs(paste(folder_path, "AtlantisMSY", sep = "/"), recursive = F) & is.null(fmin) & restart == 0)
     stop(paste("You've already run the simulation for the functional group: ", func_grp, ". If your computer stopped during the simulation please use atlantisfmsy_restart or else remove the folder ", func_grp," from the directory AtlantisMSY and run the function atlantisfmsy_simu again.", sep = ""))
 
-  # Check if there is more than one shell/batch file in the model directory.
-  if(os == "Windows"){
-    if(length(list.files(model_path)[regexpr(".bat", list.files(model_path), fixed = T) != -1]) != 1)
-      stop("More than one batch file exist in the model directory. Please remove the one not used to run the model.")
-  } else {
-    if(length(list.files(model_path)[regexpr(".sh", list.files(model_path), fixed = T) != -1]) != 1)
-      stop("More than one shell file exist in the model directory. Please remove the one not used to run the model.")
-  }
-
   # Check fleets definition in the calibrated model.
   run_time <- burnin_time + (30 * 365) # burn in time + 30 extra years, average catch will be calculated on the 5 last years.
-  harvest_filename <- atlantis_paraselect(model_path, exe_name, "-h") #looking for harvest parameters file.
+  harvest_filename <- atlantis_paraselect(model_path, exe_name, "-h", batch_file) #looking for harvest parameters file.
 
-  fishing_para <- atlantis_fleetopen(model_path, exe_name, harvest_filename, run_time) #check if fleets turn on.
+  fishing_para <- atlantis_fleetopen(model_path, exe_name, harvest_filename, run_time, batch_file) #check if fleets turn on.
   if(sum(fishing_para$active_flt) == 0)
     stop("No fleet is active in your model please change your harvest parameters file.")
 
@@ -157,18 +163,18 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
 
   # run the first set of F (from F = 0 to fmax by 0.4 step).
   if(restart == 0) {
-    simu_path <- atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para)
-    atlantisfmsy_fmaxcatch(func_grp, simu_path, exe_name, run_time, fmax) #determine the maximum yield and the F associate. Then determine the next set of F to simulate. return end = 1 if Fmsy is reached or 2 if maximum yield is reached for fmax.
-    output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o"), "/"))  #search for the output directory in bach file.
+    simu_path <- atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, batch_file)
+    atlantisfmsy_fmaxcatch(func_grp, simu_path, exe_name, run_time, fmax, batch_file) #determine the maximum yield and the F associate. Then determine the next set of F to simulate.
+    output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o", batch_file), "/"))  #search for the output directory in bach file.
     output_path <- output_path[-length(output_path)]
     output_path <- file.path(simu_path, output_path)
-    end <- atlantisfmsy_completion(func_grp, output_path)
+    end <- atlantisfmsy_completion(func_grp, output_path) #return end = 1 if Fmsy is reached or 2 if maximum yield is reached for fmax.
 
     if(end == 2) {return(invisible())}
 
   } else {
     simu_path <- file.path(folder_path, "AtlantisMSY", func_grp) #if restart the simulation after computer shutdown and atlantisfmsy_inisimu completed.
-    output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o"), "/"))  #search for the output directory in bach file.
+    output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o", batch_file), "/"))  #search for the output directory in bach file.
     output_path <- output_path[-length(output_path)]
     output_path <- file.path(simu_path, output_path)
     end <- 0
@@ -188,7 +194,7 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
 
     while(length(f_simu) != 0) {
       atlantis_fchange(func_grp, simu_path, harvest_filename, f_prop, f_simu, fishing_para) #change F in harvest file.
-      f_simu <- atlantis_bachchange(func_grp, simu_path, exe_name, f_simu) #renamed the output files.
+      f_simu <- atlantis_bachchange(func_grp, simu_path, exe_name, f_simu, batch_file) #renamed the output files.
       if(os == "Windows") {
         shell(list.files()[regexpr(".bat", list.files(), fixed = T) != -1]) #run Atlantis on Windows.
       } else {
@@ -196,8 +202,8 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
       }
       gc()
     }
-    atlantisfmsy_fmaxcatch(func_grp, simu_path, exe_name, run_time, fmax)  #determine the maximum yield and the F associated.
-    end <- atlantisfmsy_completion(func_grp, output_path)  #Then determine the next set of F to simulate. return end = 1 if Fmsy is reached or 2 if maximum yield is reached for fmax (meaning that no Fmsy have been found).
+    atlantisfmsy_fmaxcatch(func_grp, simu_path, exe_name, run_time, fmax, batch_file)  #determine the maximum yield and the F associated. Then determine the next set of F to simulate.
+    end <- atlantisfmsy_completion(func_grp, output_path)  # return end = 1 if Fmsy is reached or 2 if maximum yield is reached for fmax (meaning that no Fmsy have been found).
     gc()
   }
   setwd(gwd_ini)

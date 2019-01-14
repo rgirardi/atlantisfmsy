@@ -14,20 +14,23 @@
 #'   folder is in the main model directory \code{model_path} or if it is in the
 #'   direct parent directory. If not please either modify this package or modify
 #'   the path structure of your Atlantis input forcing parameters file.
+#' @param exe_name The name of the atlantis executable you used (ex:
+#'   atlantismain, atlantisNew).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @param os The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
 #'   At the moment, the package is not designed to run on OSX (see
 #'   \code{\link{atlantis_bachchange}}, and \code{\link{atlantis_paraselect}}).
-#' @param exe_name The name of the atlantis executable you used (ex:
-#'   atlantismain, atlantisNew).
 #' @return \code{simu_path} The simulation directory for the functional group
 #'   \code{func_grp} considered.
 #' @examples
 #' atlantisfmsy_modelcopy("COD", "C:/Atlantis/AtlantisEEC",
 #'                        "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                        "atlantismain", "Windows")
+#'                        "atlantismain", "runAtlantis.bat", "Windows")
 #' atlantisfmsy_modelcopy("COD", "/home/Atlantis/AtlantisEEC",
 #'                        "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                        "atlantisNew", "Linux")
+#'                        "atlantisNew", "runAtlantis.sh", "Linux")
 #'
 #' \dontrun{atlantisfmsy_modelcopy("COD", "/Atlantis/AtlantisEEC",
 #'                                 "/Atlantis/AtlantisEEC/AtlantisEECF_v3",
@@ -42,7 +45,7 @@
 # - atlantis_paraselect (fileselect.R)
 # - atlantis_openfile (fileselect.R)
 
-atlantisfmsy_modelcopy = function(func_grp, folder_path, model_path, exe_name, os = Sys.info()['sysname']) {
+atlantisfmsy_modelcopy = function(func_grp, folder_path, model_path, exe_name, batch_file = NULL, os = Sys.info()['sysname']) {
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
   model_path <- pathconvert(model_path)
@@ -68,7 +71,7 @@ atlantisfmsy_modelcopy = function(func_grp, folder_path, model_path, exe_name, o
   gc()
 
   #look for forcing file if they aren't in the model directory.
-  forcingfile <- atlantis_paraselect(model_path, exe_name, "-f") #prm forcing file name.
+  forcingfile <- atlantis_paraselect(model_path, exe_name, "-f", batch_file) #prm forcing file name.
 
   para <- atlantis_openfile(model_path, forcingfile, ".name")
   params <- para[[1]]

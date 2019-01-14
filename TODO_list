@@ -36,3 +36,5 @@ _ could increase perf by calling directly the right method (like aggregate.data.
 - add an option to store only the data needed for Fmsy search (5 last years)
 
 - modify vignettes to add plot option
+
+- remove the possibility to change os in function so no risk of user mistake.

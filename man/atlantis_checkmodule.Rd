@@ -4,7 +4,7 @@
 \alias{atlantis_checkmodule}
 \title{Test if Atlantis modules are on.}
 \usage{
-atlantis_checkmodule(model_path, exe_name)
+atlantis_checkmodule(model_path, exe_name, batch_file = NULL)
 }
 \arguments{
 \item{model_path}{The directory of the calibrated model (containing all the
@@ -16,6 +16,10 @@ the path structure of your Atlantis input forcing parameters file.}
 
 \item{exe_name}{The name of the atlantis executable you used (ex:
 atlantismain, atlantisNew).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 \code{test} A binary variable (1) all the modules are on (0) at least
@@ -29,9 +33,9 @@ Test if at least physics, biology and fishery modules are on in
 }
 \examples{
 atlantis_checkmodule("C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                     "atlantismain")
+                     "atlantismain", "runAtlantis.bat")
 atlantis_checkmodule("/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                     "atlantisNew")
+                     "atlantisNew", "runAtlantis.sh")
 
 }
 \seealso{

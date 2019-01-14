@@ -65,20 +65,23 @@ atlantis_fchange = function(func_grp, path, harvest_filename, f_prop, f_test, fi
 #' @param func_grp The code of the Atlantis functional group for which Fmsy will
 #'   be estimated.
 #' @param path The directory of the batch or shell file.
+#' @param exe_name The name of the atlantis executable you used (ex:
+#'   atlantismain, atlantisNew).
+#' @param f_test The new value of total fishing mortality to be tested in days.
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @param os The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
 #'   At the moment, the package is not designed to run on OSX (see
 #'   \code{\link{atlantisfmsy_modelcopy}} and
 #'   \code{\link{atlantis_paraselect}}).
-#' @param exe_name The name of the atlantis executable you used (ex:
-#'   atlantismain, atlantisNew).
-#' @param f_test The new value of total fishing mortality to be tested in days.
 #' @return \code{f_test} The new value of total fishing mortality to be tested
 #'   in days, and modify batch/shell Atlantis run file.
 #' @examples
 #' atlantis_bachchange("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantismain", 0.0002739726, "Windows")
+#'  "atlantismain", 0.0002739726, "runAtlantis.bat","Windows")
 #' atlantis_bachchange("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantisNew", 0.0002739726, "Linux")
+#'  "atlantisNew", 0.0002739726, "runAtlantis.sh","Linux")
 #'
 #' \dontrun{atlantis_bachchange("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
 #'  "atlantismain", 0.0002739726, "Darwin") # for OSX.}
@@ -88,12 +91,16 @@ atlantis_fchange = function(func_grp, path, harvest_filename, f_prop, f_test, fi
 # Function used:
 # - atlantis_openfile (fileselect.R)
 
-atlantis_bachchange = function(func_grp, path, exe_name, f_test, os = Sys.info()['sysname']) {
+atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NULL, os = Sys.info()['sysname']) {
   #find the Atlantis run bach/shell file.
-  if (os == "Windows") {
-    infilename <- list.files(path)[regexpr(".bat", list.files(path), fixed = T) != -1]
+  if(is.null(batch_file)){
+    if (os == "Windows") {
+      infilename <- list.files(path)[regexpr(".bat", list.files(path), fixed = T) != -1]
+    } else {
+      infilename <- list.files(path)[regexpr(".sh", list.files(path), fixed = T) != -1]
+    }
   } else {
-    infilename <- list.files(path)[regexpr(".sh", list.files(path), fixed = T) != -1]
+    infilename <- batch_file
   }
 
   para <- atlantis_openfile(path, infilename, exe_name)
@@ -175,11 +182,11 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, os = Sys.info()
 #' atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
 #'  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
 #'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-#'    fishing_para, "Windows")
+#'    fishing_para, "runAtlantis.bat", "Windows")
 #' atlantisfmsy_inisimu("COD", "/home/Atlantis/AtlantisEEC/",
 #'  "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantisNew",
 #'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-#'    fishing_para, "Linux")
+#'    fishing_para, "runAtlantis.sh", "Linux")
 #'
 #' \dontrun{atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
 #'  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
@@ -209,13 +216,13 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, os = Sys.info()
 # - atlantis_bachchange (core.R)
 # - atlantis_avbiomsp (check.R)
 
-atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, os = Sys.info()['sysname']) {
+atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, batch_file = NULL, os = Sys.info()['sysname']) {
   gwd_ini <- getwd()
   if (fmax >= 10) stop("You need to modify the code to use F higher than or equal to 10: problem with automatization of Atlantis output names for each simulation")
 
   #create simulation folder for functional group func_grp and copy model parameters files into the new directory.
   if(is.null(fmin)){
-    simu_path <- atlantisfmsy_modelcopy(func_grp, folder_path, model_path, exe_name)
+    simu_path <- atlantisfmsy_modelcopy(func_grp, folder_path, model_path, exe_name, batch_file)
     fmin <- 0
   } else {
     simu_path <- file.path(folder_path, "AtlantisMSY", func_grp) #if restart the simulation after computer shutdown.
@@ -224,24 +231,24 @@ atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, har
   f_test <- seq(fmin, fmax, by = 0.4) / 365 #0.4 previously.
 
   #change running time in Atlantis.
-  atlantis_runtime(simu_path, exe_name, run_time)
+  atlantis_runtime(simu_path, exe_name, run_time, batch_file)
 
   #change stock state summary periodicity.
-  atlantis_wsummary(simu_path, exe_name)
+  atlantis_wsummary(simu_path, exe_name, batch_file)
 
   biom_sp <- 1
   #set F for each simulation.
   setwd(simu_path)
   while (length(f_test) > 0 & biom_sp != 0) {
     atlantis_fchange(func_grp, simu_path, harvest_filename, f_prop, f_test, fishing_para) #change F in harvest file.
-    f_test <- atlantis_bachchange(func_grp, simu_path, exe_name, f_test) #renamed the output files.
+    f_test <- atlantis_bachchange(func_grp, simu_path, exe_name, f_test, batch_file) #renamed the output files.
 
     if (os == "Windows") {
       shell(list.files()[regexpr(".bat", list.files(), fixed = T) != -1]) #run Atlantis on Windows.
     } else {
       system(paste("sh",list.files()[regexpr(".sh", list.files(), fixed = T) != -1], sep= " ")) #run Atlantis on Linux.
     }
-    biom_sp <- atlantis_avbiomsp(func_grp, simu_path, exe_name, run_time) #Check if functional group collapsed.
+    biom_sp <- atlantis_avbiomsp(func_grp, simu_path, exe_name, run_time, batch_file) #Check if functional group collapsed.
     gc()
   }
   setwd(gwd_ini)
@@ -265,6 +272,9 @@ atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, har
 #' @param fmax The maximal value of F the simulation is going to test in y-1.
 #'   \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 #'   \code{\link{atlantis_bachchange}}).
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
 #' @return It writes on the drive, in the output folder, the file Fnext_simu.txt
 #'   containing the functional group code \code{func_grp} (sp), the current F
 #'   value with a maximum catch (F), and the two next F value to run (Ft1 and
@@ -274,14 +284,14 @@ atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, har
 #'   (yield).
 #' @examples
 #' atlantisfmsy_fmaxcatch("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantismain", 18250, 4)
+#'  "atlantismain", 18250, 4, "runAtlantis.bat")
 #' atlantisfmsy_fmaxcatch("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantisNew", 18250, 4)
+#'  "atlantisNew", 18250, 4, "runAtlantis.sh")
 #'
 #' \dontrun{atlantisfmsy_fmaxcatch("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "Windows", "atlantismain", 18250, 10)}
+#'  "atlantismain", 18250, 10, "runAtlantis.bat")}
 #' \dontrun{atlantisfmsy_fmaxcatch("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "Linux", "atlantisNew", 18250, 10)}
+#'  "atlantisNew", 18250, 10, "runAtlantis.sh")}
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection,
 #'   \code{\link[ncdf4]{nc_open}} to open netCDF4 files,
 #'   \code{\link[ncdf4]{ncvar_get}} to extract variables from netCDF4 files,
@@ -292,12 +302,12 @@ atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, har
 # Function used:
 # - atlantis_paraselect (fileselect.R)
 
-atlantisfmsy_fmaxcatch = function(func_grp, path, exe_name, run_time, fmax) {
+atlantisfmsy_fmaxcatch = function(func_grp, path, exe_name, run_time, fmax, batch_file = NULL) {
   if (fmax >= 10) stop("You need to modify the code to use F higher than or equal to 10: problem with Atlantis output names")
 
   fyield <- data.frame(sp = NA, f = NA, yield = NA)
 
-  output_path <- unlist(strsplit(atlantis_paraselect(path, exe_name, "-o"), "/"))  #search for the output directory in bach file.
+  output_path <- unlist(strsplit(atlantis_paraselect(path, exe_name, "-o", batch_file), "/"))  #search for the output directory in bach file.
   output_path <- file.path(path, output_path[-length(output_path)])
   files_name <- list.files(output_path, full.names = T)[regexpr("TOTCATCH.nc", list.files(output_path, full.names = T), fixed = T) != -1 & regexpr("MSY", list.files(output_path), fixed = T) != -1] #list of catch output files from Atlantis previous simulations.
 

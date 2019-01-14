@@ -4,7 +4,7 @@
 \alias{atlantis_runtime}
 \title{Change simulation run time.}
 \usage{
-atlantis_runtime(path, exe_name, run_time)
+atlantis_runtime(path, exe_name, run_time, batch_file = NULL)
 }
 \arguments{
 \item{path}{The directory of the batch or shell file.}
@@ -14,6 +14,10 @@ atlantismain, atlantisNew).}
 
 \item{run_time}{The total duration of the simulation in days
 (\code{burnin_time} + 10950).}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 }
 \value{
 Modify run parameters file.
@@ -25,9 +29,9 @@ Change the run time in the run parameters file. It opens the run
 }
 \examples{
 atlantis_runtime("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantismain", 18250)
+ "atlantismain", 18250, "runAtlantis.bat")
 atlantis_runtime("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantisNew", 18250)
+ "atlantisNew", 18250, "runAtlantis.sh")
 
 }
 \seealso{

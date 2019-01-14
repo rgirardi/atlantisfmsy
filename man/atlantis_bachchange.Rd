@@ -4,7 +4,7 @@
 \alias{atlantis_bachchange}
 \title{Change bach/shell Atlantis file.}
 \usage{
-atlantis_bachchange(func_grp, path, exe_name, f_test,
+atlantis_bachchange(func_grp, path, exe_name, f_test, batch_file = NULL,
   os = Sys.info()["sysname"])
 }
 \arguments{
@@ -17,6 +17,10 @@ be estimated.}
 atlantismain, atlantisNew).}
 
 \item{f_test}{The new value of total fishing mortality to be tested in days.}
+
+\item{batch_file}{The name of the batch/shell file with extension you are using
+to run your model. If not provided, the function will search for the unique
+batch file in your \code{folder_path}. \strong{Default:} NULL.}
 
 \item{os}{The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
 At the moment, the package is not designed to run on OSX (see
@@ -42,9 +46,9 @@ It modifies the name of the output files for the future run in
 
 \examples{
 atlantis_bachchange("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantismain", 0.0002739726, "Windows")
+ "atlantismain", 0.0002739726, "runAtlantis.bat","Windows")
 atlantis_bachchange("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
- "atlantisNew", 0.0002739726, "Linux")
+ "atlantisNew", 0.0002739726, "runAtlantis.sh","Linux")
 
 \dontrun{atlantis_bachchange("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
  "atlantismain", 0.0002739726, "Darwin") # for OSX.}
