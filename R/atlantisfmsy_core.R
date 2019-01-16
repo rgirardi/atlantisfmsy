@@ -71,27 +71,24 @@ atlantis_fchange = function(func_grp, path, harvest_filename, f_prop, f_test, fi
 #' @param batch_file The name of the batch/shell file with extension you are using
 #'   to run your model. If not provided, the function will search for the unique
 #'   batch file in your \code{folder_path}. \strong{Default:} NULL.
-#' @param os The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
-#'   At the moment, the package is not designed to run on OSX (see
-#'   \code{\link{atlantisfmsy_modelcopy}} and
-#'   \code{\link{atlantis_paraselect}}).
 #' @return \code{f_test} The new value of total fishing mortality to be tested
 #'   in days, and modify batch/shell Atlantis run file.
 #' @examples
 #' atlantis_bachchange("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantismain", 0.0002739726, "runAtlantis.bat","Windows")
+#'  "atlantismain", 0.0002739726, "runAtlantis.bat")
 #' atlantis_bachchange("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantisNew", 0.0002739726, "runAtlantis.sh","Linux")
+#'  "atlantisNew", 0.0002739726, "runAtlantis.sh")
 #'
-#' \dontrun{atlantis_bachchange("COD", "C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-#'  "atlantismain", 0.0002739726, "Darwin") # for OSX.}
 #' @seealso \code{\link{atlantis_openfile}} to open a parameters file and select
 #'   a parameter.
 
 # Function used:
 # - atlantis_openfile (fileselect.R)
 
-atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NULL, os = Sys.info()['sysname']) {
+atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NULL) {
+  #check os used
+  os <- Sys.info()['sysname']
+
   #find the Atlantis run bach/shell file.
   if(is.null(batch_file)){
     if (os == "Windows") {
@@ -154,10 +151,6 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 #'   folder is in the main model directory \code{model_path} or if it is in the
 #'   direct parent directory. If not please either modify this package or modify
 #'   the path structure of your Atlantis input forcing parameters file.
-#' @param os The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
-#'   At the moment, the package is not designed to run on OSX (see
-#'   \code{\link{atlantisfmsy_modelcopy}}, \code{\link{atlantis_bachchange}},
-#'   and \code{\link{atlantis_paraselect}}).
 #' @param exe_name The name of the atlantis executable you used (ex:
 #'   atlantismain, atlantisNew).
 #' @param harvest_filename The name of the harvest parameters file with its
@@ -182,24 +175,16 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 #' atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
 #'  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
 #'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-#'    fishing_para, "runAtlantis.bat", "Windows")
+#'    fishing_para, "runAtlantis.bat")
 #' atlantisfmsy_inisimu("COD", "/home/Atlantis/AtlantisEEC/",
 #'  "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantisNew",
 #'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-#'    fishing_para, "runAtlantis.sh", "Linux")
+#'    fishing_para, "runAtlantis.sh")
 #'
 #' \dontrun{atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
 #'  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
 #'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 10, 0,
-#'    fishing_para, "Windows")}
-#' \dontrun{atlantisfmsy_inisimu("COD", "/home/Atlantis/AtlantisEEC/",
-#'  "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantisNew",
-#'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 10, 0,
-#'    fishing_para, "Linux")}
-#' \dontrun{atlantisfmsy_inisimu("COD", "/Atlantis/AtlantisEEC/",
-#'  "/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
-#'   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 10, 0,
-#'    fishing_para, "Darwin") # for OSX}
+#'    fishing_para)}
 #' @seealso \code{\link{atlantisfmsy_modelcopy}} to create the simulation
 #'   directory and copy the calibrated model inside it,
 #'   \code{\link{atlantis_runtime}} to modify the runtime in the run parameters
@@ -216,7 +201,10 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 # - atlantis_bachchange (core.R)
 # - atlantis_avbiomsp (check.R)
 
-atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, batch_file = NULL, os = Sys.info()['sysname']) {
+atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, batch_file = NULL) {
+  # check os used
+  os <- Sys.info()['sysname']
+
   gwd_ini <- getwd()
   if (fmax >= 10) stop("You need to modify the code to use F higher than or equal to 10: problem with automatization of Atlantis output names for each simulation")
 

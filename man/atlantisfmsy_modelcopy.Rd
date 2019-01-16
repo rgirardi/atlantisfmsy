@@ -5,7 +5,7 @@
 \title{Copy the calibrated Atlantis model.}
 \usage{
 atlantisfmsy_modelcopy(func_grp, folder_path, model_path, exe_name,
-  batch_file = NULL, os = Sys.info()["sysname"])
+  batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -27,10 +27,6 @@ atlantismain, atlantisNew).}
 \item{batch_file}{The name of the batch/shell file with extension you are using
 to run your model. If not provided, the function will search for the unique
 batch file in your \code{folder_path}. \strong{Default:} NULL.}
-
-\item{os}{The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
-At the moment, the package is not designed to run on OSX (see
-\code{\link{atlantis_bachchange}}, and \code{\link{atlantis_paraselect}}).}
 }
 \value{
 \code{simu_path} The simulation directory for the functional group
@@ -45,14 +41,11 @@ Create the folder AtlantisMSY in the working directory
 \examples{
 atlantisfmsy_modelcopy("COD", "C:/Atlantis/AtlantisEEC",
                        "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                       "atlantismain", "runAtlantis.bat", "Windows")
+                       "atlantismain", "runAtlantis.bat")
 atlantisfmsy_modelcopy("COD", "/home/Atlantis/AtlantisEEC",
                        "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                       "atlantisNew", "runAtlantis.sh", "Linux")
+                       "atlantisNew", "runAtlantis.sh")
 
-\dontrun{atlantisfmsy_modelcopy("COD", "/Atlantis/AtlantisEEC",
-                                "/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                                "atlantismain", "Darwin") # for OSX.}
 }
 \seealso{
 \code{\link{atlantis_paraselect}} for parameters file selection,

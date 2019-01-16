@@ -4,8 +4,7 @@
 \alias{atlantis_paraselect}
 \title{Select Atlantis parameters file.}
 \usage{
-atlantis_paraselect(path, exe_name, index, batch_file = NULL,
-  os = Sys.info()["sysname"])
+atlantis_paraselect(path, exe_name, index, batch_file = NULL)
 }
 \arguments{
 \item{path}{The directory of the batch or shell file.}
@@ -22,11 +21,6 @@ fisheries csv file...).}
 \item{batch_file}{The name of the batch/shell file with extension you are using
 to run your model. If not provided, the function will search for the unique
 batch file in your \code{folder_path}. \strong{Default:} NULL.}
-
-\item{os}{The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
-At the moment, the package is not designed to run on OSX (see
-\code{\link{atlantisfmsy_modelcopy}}, and
-\code{\link{atlantis_bachchange}}.}
 }
 \value{
 \code{infilename} The name of the parameters file selected.
@@ -37,11 +31,8 @@ It looks for the names of the parameters file wanted within the
 }
 \examples{
 atlantis_paraselect("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-                    "atlantismain", "-h", "runAtlantis.bat","Windows")
+                    "atlantismain", "-h", "runAtlantis.bat")
 atlantis_paraselect("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-                    "atlantisNew", "-h", "runAtlantis.sh", "Linux")
+                    "atlantisNew", "-h", "runAtlantis.sh")
 
-\dontrun{atlantis_paraselect("/Atlantis/AtlantisEEC/AtlantisMSY/COD",
-                             "atlantismain", "-h", "runAtlantis.sh", "Darwin")
-                             # for OSX.}
 }

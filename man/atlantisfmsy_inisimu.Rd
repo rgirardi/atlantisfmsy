@@ -6,7 +6,7 @@
 \usage{
 atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name,
   harvest_filename, run_time, f_prop, fmax, fmin, fishing_para,
-  batch_file = NULL, os = Sys.info()["sysname"])
+  batch_file = NULL)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -46,11 +46,6 @@ file plus two extra columns, one to indicate if the fleet is active (1) or
 not (0) named \code{active_flt} and one named \code{effortmodel} containing
 the effortmodel option used for each fleet (output from the function
 \code{\link{atlantis_checkf}}).}
-
-\item{os}{The operating system used (ex:"Windows" or "Linux"). \strong{WARNING:}
-At the moment, the package is not designed to run on OSX (see
-\code{\link{atlantisfmsy_modelcopy}}, \code{\link{atlantis_bachchange}},
-and \code{\link{atlantis_paraselect}}).}
 }
 \value{
 \code{simu_path} The directory of the simulation folder, and run
@@ -75,24 +70,16 @@ In the directory \code{folder_path}, it creates the folder
 atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-   fishing_para, "runAtlantis.bat", "Windows")
+   fishing_para, "runAtlantis.bat")
 atlantisfmsy_inisimu("COD", "/home/Atlantis/AtlantisEEC/",
  "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantisNew",
   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 4, 0,
-   fishing_para, "runAtlantis.sh", "Linux")
+   fishing_para, "runAtlantis.sh")
 
 \dontrun{atlantisfmsy_inisimu("COD", "C:/Atlantis/AtlantisEEC/",
  "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
   "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 10, 0,
-   fishing_para, "Windows")}
-\dontrun{atlantisfmsy_inisimu("COD", "/home/Atlantis/AtlantisEEC/",
- "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantisNew",
-  "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 10, 0,
-   fishing_para, "Linux")}
-\dontrun{atlantisfmsy_inisimu("COD", "/Atlantis/AtlantisEEC/",
- "/Atlantis/AtlantisEEC/AtlantisEECF_v3", "atlantismain",
-  "AEEC_harvest.prm", 18250, c(0.2, 0.45, 0.05, 0.12, 0.08, 0.1), 10, 0,
-   fishing_para, "Darwin") # for OSX}
+   fishing_para)}
 }
 \seealso{
 \code{\link{atlantisfmsy_modelcopy}} to create the simulation
