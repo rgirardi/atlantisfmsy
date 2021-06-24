@@ -4,8 +4,13 @@
 \alias{atlantis_fdistri}
 \title{Atlantis F distribution.}
 \usage{
-atlantis_fdistri(func_grp, model_path, harvest_filename, fishing_para,
-  raw.distri = F)
+atlantis_fdistri(
+  func_grp,
+  model_path,
+  harvest_filename,
+  fishing_para,
+  raw.distri = F
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will

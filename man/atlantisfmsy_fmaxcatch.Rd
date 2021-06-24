@@ -4,8 +4,14 @@
 \alias{atlantisfmsy_fmaxcatch}
 \title{Find F with the maximum catch and estimate the next F values to simulate.}
 \usage{
-atlantisfmsy_fmaxcatch(func_grp, path, exe_name, run_time, fmax,
-  batch_file = NULL)
+atlantisfmsy_fmaxcatch(
+  func_grp,
+  path,
+  exe_name,
+  run_time,
+  fmax,
+  batch_file = NULL
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will

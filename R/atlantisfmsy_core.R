@@ -71,6 +71,9 @@ atlantis_fchange = function(func_grp, path, harvest_filename, f_prop, f_test, fi
 #' @param batch_file The name of the batch/shell file with extension you are using
 #'   to run your model. If not provided, the function will search for the unique
 #'   batch file in your \code{folder_path}. \strong{Default:} NULL.
+#' @param msy Add msy to the outputs names or not. \strong{Default:} TRUE.
+#' @param output Return \code{f_test} values without the one tested or not.
+#' \strong{Default:} TRUE.
 #' @return \code{f_test} The new value of total fishing mortality to be tested
 #'   in days, and modify batch/shell Atlantis run file.
 #' @examples
@@ -85,7 +88,7 @@ atlantis_fchange = function(func_grp, path, harvest_filename, f_prop, f_test, fi
 # Function used:
 # - atlantis_openfile (fileselect.R)
 
-atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NULL) {
+atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NULL, msy=TRUE, output = TRUE) {
   #check os used
   os <- Sys.info()['sysname']
 
@@ -115,8 +118,11 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
   while(nchar(morta) != 3) {
     morta <- paste(morta, "0", sep = "")
   }
-
-  output_name[length(output_name)] <- paste("MSY_", func_grp, "_F", morta, ".nc", sep = "")
+  if(msy){
+    output_name[length(output_name)] <- paste("MSY_", func_grp, "_F", morta, ".nc", sep = "")
+  } else {
+    output_name[length(output_name)] <- paste(func_grp, "_F", morta, ".nc", sep = "")
+  }
 
   line_para[which(line_para == "-o") + 1] <- paste(output_name, collapse = "/")
   params <- paste(line_para, collapse = " ")
@@ -126,7 +132,7 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
   f_test <- f_test[-1]
 
   gc()
-  return(f_test)
+  if(output) return(f_test)
 }
 
 #' F simulations up to the collapse of the stock.

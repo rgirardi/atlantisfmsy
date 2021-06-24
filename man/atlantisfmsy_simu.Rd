@@ -4,8 +4,17 @@
 \alias{atlantisfmsy_simu}
 \title{Fmsy estimation in Atlantis ecosystem model.}
 \usage{
-atlantisfmsy_simu(func_grp, folder_path, model_path, exe_name, burnin_time,
-  fmax, batch_file = NULL, fmin = NULL, restart = 0)
+atlantisfmsy_simu(
+  func_grp,
+  folder_path,
+  model_path,
+  exe_name,
+  burnin_time,
+  fmax,
+  batch_file = NULL,
+  fmin = NULL,
+  restart = 0
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will

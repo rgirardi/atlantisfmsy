@@ -2,10 +2,12 @@
 
 export(atlantis_dietextract)
 export(atlantis_fdistri)
+export(atlantis_fsimu)
 export(atlantis_openfile)
 export(atlantis_paraselect)
 export(atlantis_runtime)
 export(atlantis_wsummary)
+export(atlantisf_modelcopy)
 export(atlantisfmsy_modelcopy)
 export(atlantisfmsy_plot)
 export(atlantisfmsy_restart)

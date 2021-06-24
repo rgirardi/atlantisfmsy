@@ -4,7 +4,15 @@
 \alias{atlantis_bachchange}
 \title{Change bach/shell Atlantis file.}
 \usage{
-atlantis_bachchange(func_grp, path, exe_name, f_test, batch_file = NULL)
+atlantis_bachchange(
+  func_grp,
+  path,
+  exe_name,
+  f_test,
+  batch_file = NULL,
+  msy = TRUE,
+  output = TRUE
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
@@ -20,6 +28,11 @@ atlantismain, atlantisNew).}
 \item{batch_file}{The name of the batch/shell file with extension you are using
 to run your model. If not provided, the function will search for the unique
 batch file in your \code{folder_path}. \strong{Default:} NULL.}
+
+\item{msy}{Add msy to the outputs names or not. \strong{Default:} TRUE.}
+
+\item{output}{Return \code{f_test} values without the one tested or not.
+\strong{Default:} TRUE.}
 }
 \value{
 \code{f_test} The new value of total fishing mortality to be tested

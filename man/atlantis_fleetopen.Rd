@@ -4,8 +4,13 @@
 \alias{atlantis_fleetopen}
 \title{Test if the fleets are active.}
 \usage{
-atlantis_fleetopen(path, exe_name, harvest_filename, run_time,
-  batch_file = NULL)
+atlantis_fleetopen(
+  path,
+  exe_name,
+  harvest_filename,
+  run_time,
+  batch_file = NULL
+)
 }
 \arguments{
 \item{path}{The directory of the batch or shell file.}

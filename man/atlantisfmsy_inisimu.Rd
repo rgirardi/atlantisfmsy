@@ -4,9 +4,19 @@
 \alias{atlantisfmsy_inisimu}
 \title{F simulations up to the collapse of the stock.}
 \usage{
-atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name,
-  harvest_filename, run_time, f_prop, fmax, fmin, fishing_para,
-  batch_file = NULL)
+atlantisfmsy_inisimu(
+  func_grp,
+  folder_path,
+  model_path,
+  exe_name,
+  harvest_filename,
+  run_time,
+  f_prop,
+  fmax,
+  fmin,
+  fishing_para,
+  batch_file = NULL
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will

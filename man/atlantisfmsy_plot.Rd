@@ -4,9 +4,21 @@
 \alias{atlantisfmsy_plot}
 \title{Plot catches as a function of the fishing mortality}
 \usage{
-atlantisfmsy_plot(func_grp, folder_path, model_path, exe_name, fmax,
-  compareFsq = F, compareYFsq = F, Fsq_dir = NULL, YFsq = NULL,
-  shading = F, perc = F, addarrow = F, batch_file = NULL)
+atlantisfmsy_plot(
+  func_grp,
+  folder_path,
+  model_path,
+  exe_name,
+  fmax,
+  compareFsq = F,
+  compareYFsq = F,
+  Fsq_dir = NULL,
+  YFsq = NULL,
+  shading = F,
+  perc = F,
+  addarrow = F,
+  batch_file = NULL
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will

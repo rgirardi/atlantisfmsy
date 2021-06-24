@@ -4,8 +4,14 @@
 \alias{atlantis_fchange}
 \title{Change F in Atlantis.}
 \usage{
-atlantis_fchange(func_grp, path, harvest_filename, f_prop, f_test,
-  fishing_para)
+atlantis_fchange(
+  func_grp,
+  path,
+  harvest_filename,
+  f_prop,
+  f_test,
+  fishing_para
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will

@@ -4,8 +4,15 @@
 \alias{atlantisfmsy_restart}
 \title{Restart Fmsy simulation.}
 \usage{
-atlantisfmsy_restart(func_grp, folder_path, model_path, exe_name, fmax,
-  last_run = NULL, batch_file = NULL)
+atlantisfmsy_restart(
+  func_grp,
+  folder_path,
+  model_path,
+  exe_name,
+  fmax,
+  last_run = NULL,
+  batch_file = NULL
+)
 }
 \arguments{
 \item{func_grp}{The code of the Atlantis functional group for which Fmsy will
