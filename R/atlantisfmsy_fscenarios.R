@@ -36,16 +36,17 @@
 #' If wants to be used as set of fishing mortalities (in y-1), don't supply values for
 #' \code{fref}.
 #' @param fref Set of reference F (in y-1), one value per functional groups in
-#' \code{func_grp}. The default value is set to 1.
+#' \code{func_grp}. If you want to apply fmult to Fstatus-quo set the value as NULL.
+#' \strong{Default:} 1.
 #' @return Atlantis outputs for every scenarios defined previously.
 #'function(func_grp, folder_path, model_path, exe_name, burnin_time, label, batch_file = NULL, fmult, fref = rep(1,length(fmult)))
 #' @examples
 #' atlantisf_simu(c("COD","LBT"), "C:/Atlantis/AtlantisEEC/Fmsy",
 #'                   "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                   "atlantismain", 7300, "HTL", "runAtlantis.bat")
+#'                   "atlantismain", 7300, "HTL", "runAtlantis.bat", c(1,2,3))
 #' atlantisf_simu(c("COD","LBT"), "/home/Atlantis/AtlantisEEC/Fmsy",
 #'                   "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-#'                   "atlantisNew", 7300, "HTL", "runAtlantis.sh")
+#'                   "atlantisNew", 7300, "HTL", "runAtlantis.sh", c(1,2,3))
 #'
 #' @seealso \code{\link{atlantis_checkmodule}} to check if all the modules are
 #'   on (physics, biology, and fishery), \code{\link{atlantis_fgrpon}} to check
@@ -97,8 +98,8 @@
 # # folder_path <- "Z:"
 # # model_path <- "Z:/AEEC_F"
 # # exe_name <- "atlantisMerged"
-# folder_path <- "D:"
-# model_path <- "C:/Users/rgirardi/Dropbox/AEEC_Fv6290"
+# folder_path <- "C:"
+# model_path <- "C:/Users/rgirardi/ownCloud/SEAwise/StageM2_Seawise/Model config/Atlantis/AEECf_v1.0"
 # exe_name <- "atlantismain"
 # burnin_time <- 30 * 365
 #
@@ -182,7 +183,12 @@ atlantis_fsimu = function(func_grp, folder_path, model_path, exe_name, burnin_ti
   #change stock state summary periodicity.
   atlantis_wsummary(simu_path, exe_name, batch_file)
 
-
+  if(is.null(fref)){
+    fref <- rep(NA,length(func_grp))
+    for (fg in func_grp){
+      fref[[which(func_grp==fg)]] <- sum(atlantis_fdistri(fg, model_path, harvest_filename, fishing_para, raw.distri = T)) * 365
+    }
+  }
   while(length(fmult)>0){
     fsp <- fmult[1] * fref
     for (fg in func_grp) {
