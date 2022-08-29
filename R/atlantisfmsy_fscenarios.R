@@ -38,6 +38,8 @@
 #' @param fref Set of reference F (in y-1), one value per functional groups in
 #' \code{func_grp}. If you want to apply fmult to Fstatus-quo set the value as NULL.
 #' \strong{Default:} 1.
+#' @param save_time The number of days to save from the end of the simulation.
+#' \strong{Default:} NULL.
 #' @return Atlantis outputs for every scenarios defined previously.
 #'function(func_grp, folder_path, model_path, exe_name, burnin_time, label, batch_file = NULL, fmult, fref = rep(1,length(fmult)))
 #' @examples
@@ -110,7 +112,7 @@
 # fmult <- seq(0, 1, by = 0.2)
 # label <- "HTL"
 
-atlantis_fsimu = function(func_grp, folder_path, model_path, exe_name, burnin_time, label, batch_file = NULL, fmult, fref = rep(1,length(fmult))){
+atlantis_fsimu = function(func_grp, folder_path, model_path, exe_name, burnin_time, label, batch_file = NULL, fmult, fref = rep(1,length(fmult)), save_time=NULL){
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
   model_path <- pathconvert(model_path)
@@ -182,6 +184,9 @@ atlantis_fsimu = function(func_grp, folder_path, model_path, exe_name, burnin_ti
 
   #change stock state summary periodicity.
   atlantis_wsummary(simu_path, exe_name, batch_file)
+
+  #change the number of days to save
+  if(!is.null(save_time)) atlantis_savestart(simu_path, exe_name, run_time, save_time, batch_file)
 
   if(is.null(fref)){
     fref <- rep(NA,length(func_grp))

@@ -38,6 +38,8 @@
 #' @param fmax The maximal value of F the simulation is going to test in y-1.
 #'   \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 #'   \code{\link{atlantis_bachchange}}).
+#' @param save_time The number of days to save from the end of the simulation.
+#'   \strong{Default:} NULL.
 #' @param batch_file The name of the batch/shell file with extension you are using
 #'   to run your model. If not provided, the function will search for the unique
 #'   batch file in your \code{folder_path}. \strong{Default:} NULL.
@@ -104,7 +106,7 @@
 # - atlantis_fchange (core.R)
 # - atlantis_bachchange (core.R)
 
-atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, batch_file = NULL, fmin = NULL, restart = 0) {
+atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin_time, fmax, save_time = NULL,  batch_file = NULL, fmin = NULL, restart = 0) {
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
   model_path <- pathconvert(model_path)
@@ -163,7 +165,7 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
 
   # run the first set of F (from F = 0 to fmax by 0.4 step).
   if(restart == 0) {
-    simu_path <- atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, batch_file)
+    simu_path <- atlantisfmsy_inisimu(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, save_time, batch_file)
     atlantisfmsy_fmaxcatch(func_grp, simu_path, exe_name, run_time, fmax, batch_file) #determine the maximum yield and the F associate. Then determine the next set of F to simulate.
     output_path <- unlist(strsplit(atlantis_paraselect(simu_path, exe_name, "-o", batch_file), "/"))  #search for the output directory in bach file.
     output_path <- output_path[-length(output_path)]

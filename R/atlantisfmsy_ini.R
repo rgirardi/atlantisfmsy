@@ -48,6 +48,57 @@ atlantis_runtime = function(path, exe_name, run_time, batch_file = NULL) {
   gc()
 }
 
+#' Change number of days to save from model outputs.
+#'
+#' @description Change the output starting time in the run parameters file. It opens the run
+#'   parameters file, select the \code{toutstart} parameter and replaces his value by:
+#'   \code{runtime} = \code{burning_time} + 10950 days.
+#' @param path The directory of the batch or shell file.
+#' @param exe_name The name of the atlantis executable you used (ex:
+#'   atlantismain, atlantisNew).
+#' @param run_time The total duration of the simulation in days
+#'   (\code{burnin_time} + 10950).
+#' @param save_time The number of days to save from the end of the simulation.
+#' @param batch_file The name of the batch/shell file with extension you are using
+#'   to run your model. If not provided, the function will search for the unique
+#'   batch file in your \code{folder_path}. \strong{Default:} NULL.
+#' @return Modify run parameters file.
+#' @examples
+#' atlantis_savestart("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD",
+#'  "atlantismain", 18250, 365, "runAtlantis.bat")
+#' atlantis_savestart("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD",
+#'  "atlantisNew", 18250, 365, "runAtlantis.sh")
+#'
+#' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
+#'   \code{\link{atlantis_openfile}} to open parameter files and select
+#'   parameters.
+#' @export
+
+# Function used:
+# - atlantis_paraselect (fileselect.R)
+# - atlantis_openfile (fileselect.R)
+
+atlantis_savestart = function(path, exe_name, run_time, save_time, batch_file = NULL) {
+  # convert path on Windows to avoid issues with space in path
+  path <- pathconvert(path)
+
+  #selection of Atlantis parameters file.
+  infilename <- atlantis_paraselect(path, exe_name, "-r", batch_file) #looking for run parameters file.
+
+  para <- atlantis_openfile(path, infilename, "toutstart")
+  params <- para[[1]]
+  idxline <- para[[2]]
+
+  line_para <- unlist(strsplit(params[idxline], " "))
+  line_para <- gsub("\\t", "", line_para)
+  line_para[grep("[0-9]+", line_para)[1]] <- as.character(run_time - save_time)
+
+  params[idxline] <- paste(as.character(line_para), collapse = " ")
+
+  write(params, file.path(path, infilename))
+  gc()
+}
+
 #' Change writing stock state summary periodicity.
 #'
 #' @description Change writing stock state summary periodicity in the run

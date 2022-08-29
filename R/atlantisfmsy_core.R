@@ -175,6 +175,8 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 #'   not (0) named \code{active_flt} and one named \code{effortmodel} containing
 #'   the effortmodel option used for each fleet (output from the function
 #'   \code{\link{atlantis_checkf}}).
+#' @param save_time The number of days to save from the end of the simulation.
+#'   \strong{Default:} NULL.
 #' @return \code{simu_path} The directory of the simulation folder, and run
 #'   first set of simulations that are stored in the output folder.
 #' @examples
@@ -207,7 +209,7 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 # - atlantis_bachchange (core.R)
 # - atlantis_avbiomsp (check.R)
 
-atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, batch_file = NULL) {
+atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, harvest_filename, run_time, f_prop, fmax, fmin, fishing_para, save_time = NULL, batch_file = NULL) {
   # check os used
   os <- Sys.info()['sysname']
 
@@ -229,6 +231,9 @@ atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, har
 
   #change stock state summary periodicity.
   atlantis_wsummary(simu_path, exe_name, batch_file)
+
+  #change the number of days to save
+  if(!is.null(save_time)) atlantis_savestart(simu_path, exe_name, run_time, save_time, batch_file)
 
   biom_sp <- 1
   #set F for each simulation.
