@@ -38,8 +38,9 @@
 #' @param fmax The maximal value of F the simulation is going to test in y-1.
 #'   \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 #'   \code{\link{atlantis_bachchange}}).
-#' @param save_time The number of days to save from the end of the simulation.
-#'   \strong{Default:} NULL.
+#' @param save_time The number of days to save from the end of the simulation. Be
+#'   aware that in case of Fmsy estimation you need to save at least the last 5
+#'   years.\strong{Default:} NULL.
 #' @param batch_file The name of the batch/shell file with extension you are using
 #'   to run your model. If not provided, the function will search for the unique
 #'   batch file in your \code{folder_path}. \strong{Default:} NULL.
@@ -110,6 +111,10 @@ atlantisfmsy_simu = function(func_grp, folder_path, model_path, exe_name, burnin
   # convert path on Windows to avoid issues with space in path
   folder_path <- pathconvert(folder_path)
   model_path <- pathconvert(model_path)
+
+  # Check that save_time is at least 5 years (1825 days)
+  if(!is.null(save_time)) if(save_time <= 1825)
+    stop("To start Fmsy estimation you need at least to store the last 5 years of simulation (1825 days)! Please modify the save_time value accordingly.")
 
   # Check os used.
   os <- Sys.info()['sysname']
