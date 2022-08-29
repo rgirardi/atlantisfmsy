@@ -15,6 +15,7 @@ atlantisfmsy_inisimu(
   fmax,
   fmin,
   fishing_para,
+  save_time = NULL,
   batch_file = NULL
 )
 }
@@ -56,6 +57,9 @@ file plus two extra columns, one to indicate if the fleet is active (1) or
 not (0) named \code{active_flt} and one named \code{effortmodel} containing
 the effortmodel option used for each fleet (output from the function
 \code{\link{atlantis_checkf}}).}
+
+\item{save_time}{The number of days to save from the end of the simulation.
+\strong{Default:} NULL.}
 }
 \value{
 \code{simu_path} The directory of the simulation folder, and run

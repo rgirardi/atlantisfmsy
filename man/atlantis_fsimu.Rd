@@ -13,7 +13,8 @@ atlantis_fsimu(
   label,
   batch_file = NULL,
   fmult,
-  fref = rep(1, length(fmult))
+  fref = rep(1, length(fmult)),
+  save_time = NULL
 )
 }
 \arguments{
@@ -47,7 +48,11 @@ If wants to be used as set of fishing mortalities (in y-1), don't supply values 
 \code{fref}.}
 
 \item{fref}{Set of reference F (in y-1), one value per functional groups in
-\code{func_grp}. The default value is set to 1.}
+\code{func_grp}. If you want to apply fmult to Fstatus-quo set the value as NULL.
+\strong{Default:} 1.}
+
+\item{save_time}{The number of days to save from the end of the simulation.
+\strong{Default:} NULL.}
 }
 \value{
 Atlantis outputs for every scenarios defined previously.
@@ -75,10 +80,10 @@ across fleet isn't changed.
 \examples{
 atlantisf_simu(c("COD","LBT"), "C:/Atlantis/AtlantisEEC/Fmsy",
                   "C:/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                  "atlantismain", 7300, "HTL", "runAtlantis.bat")
+                  "atlantismain", 7300, "HTL", "runAtlantis.bat", c(1,2,3))
 atlantisf_simu(c("COD","LBT"), "/home/Atlantis/AtlantisEEC/Fmsy",
                   "/home/Atlantis/AtlantisEEC/AtlantisEECF_v3",
-                  "atlantisNew", 7300, "HTL", "runAtlantis.sh")
+                  "atlantisNew", 7300, "HTL", "runAtlantis.sh", c(1,2,3))
 
 }
 \seealso{

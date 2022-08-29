@@ -11,6 +11,7 @@ atlantisfmsy_simu(
   exe_name,
   burnin_time,
   fmax,
+  save_time = NULL,
   batch_file = NULL,
   fmin = NULL,
   restart = 0
@@ -39,6 +40,10 @@ before starting the additional 30 years of simulation.}
 \item{fmax}{The maximal value of F the simulation is going to test in y-1.
 \strong{WARNING:} only work if \code{fmax} < 10 y-1 (see
 \code{\link{atlantis_bachchange}}).}
+
+\item{save_time}{The number of days to save from the end of the simulation. Be
+aware that in case of Fmsy estimation you need to save at least the last 5
+years.\strong{Default:} NULL.}
 
 \item{batch_file}{The name of the batch/shell file with extension you are using
 to run your model. If not provided, the function will search for the unique
