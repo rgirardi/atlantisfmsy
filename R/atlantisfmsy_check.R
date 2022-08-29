@@ -26,6 +26,8 @@
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link{atlantis_openfile}} to open a parameters file and select a
 #'   parameter.
+#' @export
+
 
 # Function used:
 # - atlantis_paraselect (fileselect.R)
@@ -108,6 +110,7 @@ atlantis_checkmodule = function(model_path, exe_name, batch_file = NULL) {
 #'   characters, \code{\link[qdapRegex]{ex_number}} to extract number from a
 #'   chain of characters, and \code{\link[utils]{read.table}} to open table
 #'   stored in text files (.txt, .csv ...).
+#' @export
 
 # Function used:
 # - atlantis_paraselect (fileselect.R)
@@ -162,6 +165,7 @@ atlantis_fleetopen = function(path, exe_name, harvest_filename, run_time, batch_
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link[utils]{read.table}} to open table stored in text files (.txt,
 #'   .csv ...).
+#' @export
 
 # Function used:
 # - atlantis_paraselect (fileselect.R)
@@ -201,6 +205,7 @@ atlantis_fgrpon = function(func_grp, path, exe_name, batch_file = NULL) {
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link[utils]{read.table}} to open table stored in text files (.txt,
 #'   .csv ...).
+#' @export
 
 # Function used:
 # - atlantis_paraselect (fileselect.R)
@@ -241,6 +246,7 @@ atlantis_fgrpimp = function(func_grp, path, exe_name, batch_file = NULL) {
 #'   a parameter, \code{\link[stringr]{str_split_fixed}} to split a chain of
 #'   characters, and \code{\link[qdapRegex]{ex_number}} to extract number from a
 #'   chain of characters.
+#' @export
 
 # Function used:
 # - atlantis_openfile (fileselect.R)
@@ -291,6 +297,7 @@ atlantis_checkf = function(path, harvest_filename, fishing_para) {
 #' @seealso \code{\link{atlantis_paraselect}} for parameters file selection, and
 #'   \code{\link[utils]{read.table}} to open table stored in text files (.txt,
 #'   .csv ...).
+#' @export
 
 # Function used:
 # - atlantis_paraselect (fileselect.R)
@@ -327,6 +334,7 @@ atlantis_avbiomsp = function(func_grp, path, exe_name, run_time, batch_file = NU
 #' atlantisfmsy_completion("COD", "/home/Atlantis/AtlantisEEC/AtlantisMSY/COD/output")
 #' @seealso \code{\link[utils]{read.table}} to open table stored in text files
 #'   (.txt, .csv ...).
+#' @export
 
 atlantisfmsy_completion = function(func_grp, output_path) {
 

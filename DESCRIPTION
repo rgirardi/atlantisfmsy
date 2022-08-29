@@ -36,7 +36,7 @@ Imports: ggplot2 (>= 2.2.1),
     stats (>= 3.4.3),
     stringr (>= 1.2.0),
     utils (>= 3.4.3)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: testthat,
     knitr,
     rmarkdown

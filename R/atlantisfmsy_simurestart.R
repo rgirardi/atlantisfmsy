@@ -195,6 +195,7 @@ atlantisfmsy_restart = function(func_grp, folder_path, model_path, exe_name, fma
 #' atlantis_lastsimu("C:/Atlantis/AtlantisEEC/AtlantisMSY/COD/output")
 #' atlantis_lastsimu("/home/Atlantis/AtlantisEEC/AtlantisMSY/COD/output")
 #' @seealso \code{\link[base]{file.info}} to recover files description.
+#' @export
 
 # WARNING doesn't work if files have been transfered to another computer because the date of creation change.
 atlantis_lastsimu = function(output_path, last_run = NULL) {

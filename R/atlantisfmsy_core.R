@@ -28,6 +28,7 @@
 #'   fishing_para)
 #' @seealso \code{\link{atlantis_openfile}} to open a parameters file and select
 #'   a parameter.
+#' @export
 
 # Function used:
 # - atlantis_openfile (fileselect.R)
@@ -84,6 +85,7 @@ atlantis_fchange = function(func_grp, path, harvest_filename, f_prop, f_test, fi
 #'
 #' @seealso \code{\link{atlantis_openfile}} to open a parameters file and select
 #'   a parameter.
+#' @export
 
 # Function used:
 # - atlantis_openfile (fileselect.R)
@@ -177,6 +179,7 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 #'   \code{\link{atlantis_checkf}}).
 #' @param save_time The number of days to save from the end of the simulation.
 #'   \strong{Default:} NULL.
+#'
 #' @return \code{simu_path} The directory of the simulation folder, and run
 #'   first set of simulations that are stored in the output folder.
 #' @examples
@@ -201,6 +204,7 @@ atlantis_bachchange = function(func_grp, path, exe_name, f_test, batch_file = NU
 #'   harvest pramaters file, \code{\link{atlantis_bachchange}} to change output
 #'   names in the batch/shell file, and \code{\link{atlantis_avbiomsp}} to
 #'   estimate the functional group biomass.
+#' @export
 
 # Function used:
 # - atlantisfmsy_modelcopy (simudir.R)
@@ -297,6 +301,7 @@ atlantisfmsy_inisimu = function(func_grp, folder_path, model_path, exe_name, har
 #'   \code{\link[ncdf4]{nc_close}} to close netCDF4 files,
 #'   \code{\link[stats]{aggregate}} to aggregate data and
 #'   \code{\link[utils]{write.table}} to write table on the drive.
+#' @export
 
 # Function used:
 # - atlantis_paraselect (fileselect.R)
