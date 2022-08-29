@@ -191,13 +191,16 @@ atlantis_fsimu = function(func_grp, folder_path, model_path, exe_name, burnin_ti
   if(is.null(fref)){
     fref <- rep(NA,length(func_grp))
     for (fg in func_grp){
-      fref[[which(func_grp==fg)]] <- sum(atlantis_fdistri(fg, model_path, harvest_filename, fishing_para, raw.distri = T)) * 365
+      fref[[which(func_grp==fg)]] <- sum(atlantis_fdistri(fg, model_path, harvest_filename, fishing_para, raw.distri = T)*f_prop[[which(func_grp == fg)]]) # extract F values from active fleet for fg functional groups in the calibrated model input files
     }
+  } else {
+    fref <- fref/365 # convert to d-1
   }
+
   while(length(fmult)>0){
     fsp <- fmult[1] * fref
     for (fg in func_grp) {
-      atlantis_fchange(fg, simu_path, harvest_filename, f_prop[[which(func_grp == fg)]], fsp[which(func_grp == fg)]/365, fishing_para) #change F in harvest file.
+      atlantis_fchange(fg, simu_path, harvest_filename, f_prop[[which(func_grp == fg)]], fsp[which(func_grp == fg)], fishing_para) #change F in harvest file.
     }
     atlantis_bachchange(label, simu_path, exe_name, fmult[1]/365, batch_file, msy = F, output = F) #renamed the output files using label and F multipliers
 
